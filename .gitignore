@@ -1,0 +1,29 @@
+# Dependencias
+node_modules/
+.pnp
+.pnp.js
+
+# Entorno
+.env
+.env.local
+.env*.local
+*.key
+*.pem
+
+# Build
+.next/
+dist/
+build/
+out/
+
+# Supabase
+.branches/
+.temp/
+supabase/.env
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
