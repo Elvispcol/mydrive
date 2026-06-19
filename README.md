@@ -16,9 +16,6 @@ delegar. MyDrive vende **administración**: control total de la operación.
 
 ### La cadena de valor
 
-Un conductor reporta en su preoperacional que los frenos fallan. En un sistema
-tradicional, eso llega como un correo y muere. En MyDrive:
-
 ```
 Preoperacional con falla
       ↓
@@ -31,50 +28,82 @@ Preoperacional con falla
   Hoja de vida del vehículo (queda registrado para siempre)
 ```
 
-Esa trazabilidad por región, con responsables y estados, es el producto.
+## Estado actual
 
-## Modelo de negocio
+```
+Fase 0  ▓▓▓▓▓░░░░░  en preparación
+Fase 1  ▓▓▓▓▓▓▓▓▓▓  COMPLETADA (maqueta + MVP funcional)
+Fase 2  ▓▓▓▓▓▓▓▓▓▓  COMPLETADA (base de datos + RLS)
+Fase 3  ▓▓▓▓▓▓▓▓░░  EN CURSO  (frontend Next.js conectado)
+```
 
-- **Producto propio bajo licencia.** El cliente paga por usar MyDrive; el software
-  es de Porciento Trading.
-- **Precio por profundidad, no por volumen.** El cliente paga por las capacidades
-  (tiers de funcionalidad), nunca por cantidad de vehículos. Internamente se definen
-  rangos de operación por tier para proteger el margen de infraestructura.
-- **Cambios de configuración gratis e instantáneos.** Lo que el administrador puede
-  ajustar desde su panel (ítems del checklist, tipos de evento, textos) no requiere
-  desarrollo. Módulos nuevos completos son proyectos aparte.
+## Infraestructura activa
 
-## Documentación
+| Servicio | URL / Referencia |
+|----------|-----------------|
+| Supabase (BD + Auth) | `https://hilyuohcubhrvdzapplp.supabase.co` |
+| Repositorio | `https://github.com/Elvispcol/mydrive` |
+| Frontend (local) | `cd frontend && npm run dev` |
 
-| Documento | Contenido |
-|-----------|-----------|
-| [docs/01-arquitectura.md](docs/01-arquitectura.md) | Arquitectura del sistema y decisiones técnicas |
-| [docs/02-stack.md](docs/02-stack.md) | Stack tecnológico y justificación |
-| [docs/03-modelo-datos.md](docs/03-modelo-datos.md) | Modelo de datos y relaciones |
-| [docs/04-seguridad.md](docs/04-seguridad.md) | Estrategia de seguridad y aislamiento de datos |
-| [docs/05-roles-permisos.md](docs/05-roles-permisos.md) | Catálogo de roles y permisos |
-| [docs/06-roadmap.md](docs/06-roadmap.md) | Roadmap por fases |
-| [docs/07-gestion-proyecto.md](docs/07-gestion-proyecto.md) | Convenciones y gestión del desarrollo |
+## Cuentas de demo
+
+| Rol | Email | Contraseña |
+|-----|-------|-----------|
+| Director | `director@mydrive.demo` | `Demo1234!` |
+| Admin región Caribe | `admin@mydrive.demo` | `Demo1234!` |
+| Conductor | `conductor@mydrive.demo` | `Demo1234!` |
 
 ## Estructura del repositorio
 
 ```
 mydrive/
 ├── docs/              Documentación de arquitectura, seguridad y gestión
+│   └── v0-prompt.md   Prompts para generar/iterar UI con v0.dev
 ├── db/
-│   ├── migrations/    Esquema de base de datos (orden numerado)
-│   └── policies/      Políticas de Row Level Security (RLS)
-├── backend/           Lógica de backend (Edge Functions, validaciones)
-├── .github/           Plantillas y CI
+│   ├── migrations/    Esquema de base de datos (aplicado en Supabase)
+│   └── policies/      Políticas de Row Level Security (activas)
+├── backend/
+│   └── src/
+│       ├── crear-novedad/     Edge Function: genera novedades desde preoperacional
+│       └── notificar-evento/  Edge Function: notifica eventos y crea novedades
+├── frontend/          Next.js 15 App Router + Supabase SSR
+│   ├── app/           Páginas (login, /admin, /conductor, /director)
+│   ├── components/    Componentes reutilizables
+│   └── lib/supabase/  Clientes y tipos TypeScript
 └── README.md
 ```
 
-El frontend (generado con v0) vive como repositorio/carpeta hermana y consume
-este backend.
+## Arrancar el frontend
 
-## Estado
+```bash
+cd frontend
+npm install
+npm run dev
+# → http://localhost:3000
+```
 
-Fase 1 — Fundamentos. Modelo de datos y arquitectura de seguridad definidos.
+Las credenciales de Supabase ya están en `frontend/.env.local` (no versionado).
+
+## Documentación técnica
+
+| Documento | Contenido |
+|-----------|-----------|
+| [docs/01-arquitectura.md](docs/01-arquitectura.md) | Arquitectura y decisiones técnicas (ADRs) |
+| [docs/02-stack.md](docs/02-stack.md) | Stack tecnológico y justificación |
+| [docs/03-modelo-datos.md](docs/03-modelo-datos.md) | Modelo de datos y relaciones |
+| [docs/04-seguridad.md](docs/04-seguridad.md) | Estrategia RLS e isolamiento multi-tenant |
+| [docs/05-roles-permisos.md](docs/05-roles-permisos.md) | Catálogo de roles y matriz de permisos |
+| [docs/06-roadmap.md](docs/06-roadmap.md) | Roadmap por fases |
+| [docs/07-gestion-proyecto.md](docs/07-gestion-proyecto.md) | Convenciones de desarrollo |
+
+## Modelo de negocio
+
+- **Producto propio bajo licencia.** El cliente paga por usar MyDrive; el software
+  es de Porciento Trading.
+- **Precio por profundidad, no por volumen.** El cliente paga por las capacidades
+  (tiers de funcionalidad), nunca por cantidad de vehículos.
+- **Cambios de configuración gratis e instantáneos.** Lo que el administrador puede
+  ajustar desde su panel (ítems del checklist, tipos de evento) no requiere desarrollo.
 
 ---
 
