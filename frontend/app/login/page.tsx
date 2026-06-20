@@ -25,33 +25,33 @@ export default function LoginPage() {
       return
     }
 
-    // La raíz (/) detecta el rol y redirige a la vista correcta
     router.push('/')
     router.refresh()
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-canvas">
       <div className="w-full max-w-sm">
+
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-blue-600 rounded-2xl mb-4">
-            <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+          <div className="inline-flex items-center justify-center w-14 h-14 bg-primary rounded-2xl mb-4 shadow-lg shadow-primary/20">
+            <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+              <path strokeLinecap="round" strokeLinejoin="round"
                 d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0M13 6H5l-2 4v5h2m8-9h4l2 4v5h-2m-4-9v9" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">MyDrive</h1>
-          <p className="text-sm text-gray-500 mt-1">Gestión de flota vehicular</p>
+          <h1 className="text-2xl font-bold text-ink-900 tracking-tight">MyDrive</h1>
+          <p className="text-sm text-ink-500 mt-1">Gestión de flota vehicular</p>
         </div>
 
         {/* Formulario */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-6">Iniciar sesión</h2>
+        <div className="bg-surface rounded-2xl border border-border p-8 shadow-sm">
+          <h2 className="text-base font-semibold text-ink-900 mb-6">Iniciar sesión</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-xs font-semibold text-ink-700 mb-1.5 uppercase tracking-wider">
                 Correo electrónico
               </label>
               <input
@@ -61,12 +61,12 @@ export default function LoginPage() {
                 required
                 autoComplete="email"
                 placeholder="tu@correo.com"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2.5 border border-border rounded-lg text-sm text-ink-900 placeholder:text-ink-300 bg-surface focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-xs font-semibold text-ink-700 mb-1.5 uppercase tracking-wider">
                 Contraseña
               </label>
               <input
@@ -76,12 +76,12 @@ export default function LoginPage() {
                 required
                 autoComplete="current-password"
                 placeholder="••••••••"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2.5 border border-border rounded-lg text-sm text-ink-900 placeholder:text-ink-300 bg-surface focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
               />
             </div>
 
             {error && (
-              <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+              <p className="text-sm text-danger-dark bg-danger-pale border border-danger/20 rounded-lg px-3 py-2">
                 {error}
               </p>
             )}
@@ -89,7 +89,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full bg-primary text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm shadow-primary/20 mt-2"
             >
               {loading ? 'Entrando...' : 'Entrar'}
             </button>
@@ -97,7 +97,7 @@ export default function LoginPage() {
         </div>
 
         {/* Credenciales de demo */}
-        <div className="mt-4 bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-800">
+        <div className="mt-4 bg-warning-pale border border-warning/20 rounded-xl p-4 text-xs text-warning-dark">
           <p className="font-semibold mb-2">Cuentas de demo:</p>
           <p>Director: <span className="font-mono">director@mydrive.demo</span></p>
           <p>Admin: <span className="font-mono">admin@mydrive.demo</span></p>

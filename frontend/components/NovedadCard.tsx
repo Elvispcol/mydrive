@@ -1,23 +1,29 @@
 import type { Novedad } from '@/lib/supabase/types'
 
-const PRIORIDAD_ESTILOS: Record<string, string> = {
-  critica: 'border-l-red-600',
-  alta:    'border-l-orange-500',
-  media:   'border-l-yellow-400',
-  baja:    'border-l-gray-300',
+const PRIORIDAD_BORDER: Record<string, string> = {
+  critica: 'border-l-danger',
+  alta:    'border-l-warning',
+  media:   'border-l-primary-light',
+  baja:    'border-l-ink-100',
 }
 
 const ESTADO_BADGE: Record<string, string> = {
-  abierta:    'bg-red-100 text-red-700',
-  en_proceso: 'bg-yellow-100 text-yellow-700',
-  cerrada:    'bg-green-100 text-green-700',
+  abierta:    'bg-danger-pale text-danger-dark',
+  en_proceso: 'bg-warning-pale text-warning-dark',
+  cerrada:    'bg-success-pale text-success-dark',
 }
 
 const ORIGEN_BADGE: Record<string, string> = {
-  preoperacional: 'bg-blue-100 text-blue-700',
-  evento:         'bg-orange-100 text-orange-700',
-  manual:         'bg-gray-100 text-gray-600',
-  documento:      'bg-purple-100 text-purple-700',
+  preoperacional: 'bg-primary-pale text-primary',
+  evento:         'bg-warning-pale text-warning-dark',
+  manual:         'bg-surface-raised text-ink-500',
+  documento:      'bg-primary-pale text-primary-hover',
+}
+
+const ESTADO_LABEL: Record<string, string> = {
+  abierta:    'abierta',
+  en_proceso: 'en proceso',
+  cerrada:    'cerrada',
 }
 
 function tiempoRelativo(fecha: string) {
@@ -31,23 +37,23 @@ function tiempoRelativo(fecha: string) {
 
 export default function NovedadCard({ novedad }: { novedad: Novedad }) {
   return (
-    <div className={`bg-white rounded-xl border border-gray-200 border-l-4 ${PRIORIDAD_ESTILOS[novedad.prioridad]} px-4 py-3`}>
+    <div className={`bg-surface rounded-xl border border-border border-l-4 ${PRIORIDAD_BORDER[novedad.prioridad] ?? 'border-l-ink-100'} px-4 py-3 transition-shadow hover:shadow-sm`}>
       <div className="flex items-start justify-between gap-3">
-        <p className="text-sm font-medium text-gray-900 leading-snug">{novedad.titulo}</p>
-        <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${ESTADO_BADGE[novedad.estado]}`}>
-          {novedad.estado.replace('_', ' ')}
+        <p className="text-sm font-semibold text-ink-900 leading-snug">{novedad.titulo}</p>
+        <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${ESTADO_BADGE[novedad.estado] ?? ESTADO_BADGE.abierta}`}>
+          {ESTADO_LABEL[novedad.estado] ?? novedad.estado}
         </span>
       </div>
 
       <div className="flex items-center gap-2 mt-2 flex-wrap">
-        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${ORIGEN_BADGE[novedad.origen_tipo]}`}>
+        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${ORIGEN_BADGE[novedad.origen_tipo] ?? ORIGEN_BADGE.manual}`}>
           {novedad.origen_tipo}
         </span>
-        <span className="text-xs text-gray-400">{tiempoRelativo(novedad.creado_en)}</span>
+        <span className="text-xs text-ink-300">{tiempoRelativo(novedad.creado_en)}</span>
       </div>
 
       {novedad.descripcion && (
-        <p className="text-xs text-gray-500 mt-1.5 line-clamp-2">{novedad.descripcion}</p>
+        <p className="text-xs text-ink-500 mt-1.5 line-clamp-2">{novedad.descripcion}</p>
       )}
     </div>
   )

@@ -16,7 +16,6 @@ export default async function DirectorPage() {
 
   if (!perfil || perfil.rol !== 'director') redirect('/')
 
-  // Métricas nacionales — RLS permite ver todo al director
   const [
     { count: totalVehiculos },
     { count: novedadesAbiertas },
@@ -41,42 +40,47 @@ export default async function DirectorPage() {
           {/* Header */}
           <div className="flex items-center justify-between mb-2">
             <div>
-              <p className="text-xs font-medium text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full inline-block mb-2">
-                Vista de director · Acceso nacional completo
-              </p>
-              <h1 className="text-2xl font-bold text-gray-900">Resumen nacional</h1>
-              <p className="text-sm text-gray-500">Bienvenida, {perfil.nombre}</p>
+              <span className="text-xs font-semibold text-primary bg-primary-pale px-2.5 py-1 rounded-full inline-block mb-3">
+                Vista nacional · Director
+              </span>
+              <h1 className="text-xl font-bold text-ink-900 tracking-tight">Resumen nacional</h1>
+              <p className="text-sm text-ink-500 mt-0.5">Bienvenida, {perfil.nombre}</p>
             </div>
             <LogoutButton />
           </div>
 
           {/* KPIs */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 my-8">
-            <KpiCard icon="🚛" label="Total vehículos" value={totalVehiculos ?? 0} color="blue" />
-            <KpiCard icon="⚠️" label="Novedades abiertas" value={novedadesAbiertas ?? 0} color="red" />
-            <KpiCard icon="📋" label="Tareas abiertas" value={tareasAbiertas ?? 0} color="orange" />
-            <KpiCard icon="🗺️" label="Regiones activas" value={regiones?.length ?? 0} color="green" />
+            <KpiCard icon={<IconTruck />} label="Total vehículos"    value={totalVehiculos ?? 0}    variant="primary" />
+            <KpiCard icon={<IconAlert />} label="Novedades abiertas" value={novedadesAbiertas ?? 0} variant="danger" />
+            <KpiCard icon={<IconClip />}  label="Tareas abiertas"    value={tareasAbiertas ?? 0}    variant="warning" />
+            <KpiCard icon={<IconMap />}   label="Regiones activas"   value={regiones?.length ?? 0}  variant="success" />
           </div>
 
           <div className="grid lg:grid-cols-2 gap-6">
             {/* Tabla de regiones */}
             <section>
-              <h2 className="text-base font-semibold text-gray-900 mb-4">Detalle por región</h2>
-              <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+              <h2 className="text-sm font-semibold text-ink-700 uppercase tracking-wider mb-4">Detalle por región</h2>
+              <div className="bg-surface rounded-xl border border-border overflow-hidden">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-gray-100 bg-gray-50">
-                      <th className="text-left px-4 py-3 text-xs font-medium text-gray-500">Región</th>
-                      <th className="text-right px-4 py-3 text-xs font-medium text-gray-500">Admin</th>
+                    <tr className="border-b border-border bg-canvas">
+                      <th className="text-left px-4 py-3 text-xs font-semibold text-ink-500 uppercase tracking-wider">Región</th>
+                      <th className="text-right px-4 py-3 text-xs font-semibold text-ink-500 uppercase tracking-wider">Admin</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100">
+                  <tbody className="divide-y divide-border">
                     {regiones?.map(r => (
-                      <tr key={r.id} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 font-medium text-gray-900">{r.nombre}</td>
-                        <td className="px-4 py-3 text-right text-gray-400">—</td>
+                      <tr key={r.id} className="hover:bg-primary-pale transition-colors group">
+                        <td className="px-4 py-3 font-medium text-ink-900 group-hover:text-primary">{r.nombre}</td>
+                        <td className="px-4 py-3 text-right text-ink-300">—</td>
                       </tr>
                     ))}
+                    {(!regiones || regiones.length === 0) && (
+                      <tr>
+                        <td colSpan={2} className="px-4 py-6 text-center text-ink-300 text-sm">Sin regiones configuradas</td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -84,22 +88,24 @@ export default async function DirectorPage() {
 
             {/* Novedades críticas */}
             <section>
-              <h2 className="text-base font-semibold text-gray-900 mb-4">Novedades críticas abiertas</h2>
-              <div className="space-y-3">
+              <h2 className="text-sm font-semibold text-ink-700 uppercase tracking-wider mb-4">Novedades críticas abiertas</h2>
+              <div className="space-y-2.5">
                 {novedadesCriticas && novedadesCriticas.length > 0 ? (
                   novedadesCriticas.map(n => (
-                    <div key={n.id} className="bg-white rounded-xl border-l-4 border-l-red-500 border border-gray-200 px-4 py-3">
-                      <p className="text-sm font-medium text-gray-900">{n.titulo}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full">{n.origen_tipo}</span>
-                        <span className="text-xs text-gray-400">
+                    <div key={n.id} className="bg-surface rounded-xl border-l-4 border-l-danger border border-border px-4 py-3 hover:shadow-sm transition-shadow">
+                      <p className="text-sm font-semibold text-ink-900">{n.titulo}</p>
+                      <div className="flex items-center gap-2 mt-1.5">
+                        <span className="text-xs bg-danger-pale text-danger-dark px-2 py-0.5 rounded-full font-medium">
+                          {n.origen_tipo}
+                        </span>
+                        <span className="text-xs text-ink-300">
                           {new Date(n.creado_en).toLocaleDateString('es-CO')}
                         </span>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <div className="bg-white rounded-xl border border-gray-200 p-6 text-center text-gray-400 text-sm">
+                  <div className="bg-surface rounded-xl border border-border p-6 text-center text-ink-300 text-sm">
                     Sin novedades críticas abiertas
                   </div>
                 )}
@@ -112,22 +118,58 @@ export default async function DirectorPage() {
   )
 }
 
-function KpiCard({ icon, label, value, color }: {
-  icon: string; label: string; value: number; color: string
+type KpiVariant = 'danger' | 'warning' | 'success' | 'primary'
+
+const KPI_STYLES: Record<KpiVariant, { icon: string; value: string }> = {
+  danger:  { icon: 'bg-danger-pale text-danger-dark',   value: 'text-danger-dark' },
+  warning: { icon: 'bg-warning-pale text-warning-dark', value: 'text-warning-dark' },
+  success: { icon: 'bg-success-pale text-success-dark', value: 'text-ink-900' },
+  primary: { icon: 'bg-primary-pale text-primary',      value: 'text-ink-900' },
+}
+
+function KpiCard({ icon, label, value, variant }: {
+  icon: React.ReactNode; label: string; value: number; variant: KpiVariant
 }) {
-  const colors: Record<string, string> = {
-    red: 'bg-red-50 text-red-600',
-    orange: 'bg-orange-50 text-orange-600',
-    green: 'bg-green-50 text-green-600',
-    blue: 'bg-blue-50 text-blue-600',
-  }
+  const s = KPI_STYLES[variant]
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5">
-      <div className={`inline-flex items-center justify-center w-10 h-10 rounded-lg text-lg mb-3 ${colors[color]}`}>
+    <div className="bg-surface rounded-xl border border-border p-5">
+      <div className={`inline-flex items-center justify-center w-9 h-9 rounded-lg mb-3 ${s.icon}`}>
         {icon}
       </div>
-      <p className="text-2xl font-bold text-gray-900">{value}</p>
-      <p className="text-xs text-gray-500 mt-1">{label}</p>
+      <p className={`text-2xl font-bold ${s.value}`}>{value}</p>
+      <p className="text-xs text-ink-500 mt-1 leading-snug">{label}</p>
     </div>
+  )
+}
+
+function IconTruck() {
+  return (
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0M13 6H5l-2 4v5h2m8-9h4l2 4v5h-2m-4-9v9" />
+    </svg>
+  )
+}
+
+function IconAlert() {
+  return (
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+    </svg>
+  )
+}
+
+function IconClip() {
+  return (
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+    </svg>
+  )
+}
+
+function IconMap() {
+  return (
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+    </svg>
   )
 }

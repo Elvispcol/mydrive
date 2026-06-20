@@ -10,7 +10,6 @@ export default async function AdminPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  // Verificar rol
   const { data: perfil } = await supabase
     .from('usuario')
     .select('id, nombre, rol, region_id')
@@ -19,7 +18,6 @@ export default async function AdminPage() {
 
   if (!perfil || !['admin_apoyo', 'director'].includes(perfil.rol)) redirect('/')
 
-  // Cargar novedades abiertas — RLS filtra automáticamente por región
   const { data: novedades } = await supabase
     .from('novedad')
     .select('*')
@@ -27,7 +25,6 @@ export default async function AdminPage() {
     .order('creado_en', { ascending: false })
     .limit(20)
 
-  // Cargar tareas pendientes
   const { data: tareas } = await supabase
     .from('tarea')
     .select('*, asignado: usuario!tarea_asignado_a_fkey(nombre)')
@@ -35,7 +32,6 @@ export default async function AdminPage() {
     .order('vence_en', { ascending: true })
     .limit(10)
 
-  // Contadores para el dashboard
   const novedadesAbiertas = novedades?.filter(n => n.estado === 'abierta').length ?? 0
   const tareasAbiertas = tareas?.length ?? 0
 
@@ -49,61 +45,63 @@ export default async function AdminPage() {
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Tablero</h1>
-              <p className="text-sm text-gray-500">Bienvenido, {perfil.nombre}</p>
+              <h1 className="text-xl font-bold text-ink-900 tracking-tight">Tablero</h1>
+              <p className="text-sm text-ink-500 mt-0.5">Bienvenido, {perfil.nombre}</p>
             </div>
             <LogoutButton />
           </div>
 
           {/* KPIs */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <KpiCard label="Novedades abiertas" value={novedadesAbiertas} color="red" icon="⚠️" />
-            <KpiCard label="Tareas pendientes" value={tareasAbiertas} color="orange" icon="📋" />
-            <KpiCard label="Preoperacionales hoy" value="—" color="green" icon="✅" />
-            <KpiCard label="Vehículos activos" value="—" color="blue" icon="🚛" />
+            <KpiCard label="Novedades abiertas"   value={novedadesAbiertas} variant="danger"  icon={<IconAlert />} />
+            <KpiCard label="Tareas pendientes"     value={tareasAbiertas}    variant="warning" icon={<IconClipboard />} />
+            <KpiCard label="Preoperacionales hoy"  value="—"                 variant="success" icon={<IconCheck />} />
+            <KpiCard label="Vehículos activos"     value="—"                 variant="primary" icon={<IconTruck />} />
           </div>
 
           <div className="grid lg:grid-cols-5 gap-6">
             {/* Novedades recientes */}
             <section className="lg:col-span-3">
-              <h2 className="text-base font-semibold text-gray-900 mb-4">Novedades recientes</h2>
+              <h2 className="text-sm font-semibold text-ink-700 uppercase tracking-wider mb-4">Novedades recientes</h2>
               {novedades && novedades.length > 0 ? (
-                <div className="space-y-3">
+                <div className="space-y-2.5">
                   {(novedades as Novedad[]).map(n => (
                     <NovedadCard key={n.id} novedad={n} />
                   ))}
                 </div>
               ) : (
-                <div className="bg-white rounded-xl border border-gray-200 p-8 text-center text-gray-400">
-                  Sin novedades abiertas
-                </div>
+                <EmptyState label="Sin novedades abiertas" />
               )}
             </section>
 
-            {/* Tareas de hoy */}
+            {/* Tareas pendientes */}
             <section className="lg:col-span-2">
-              <h2 className="text-base font-semibold text-gray-900 mb-4">Tareas pendientes</h2>
-              <div className="bg-white rounded-xl border border-gray-200 divide-y divide-gray-100">
+              <h2 className="text-sm font-semibold text-ink-700 uppercase tracking-wider mb-4">Tareas pendientes</h2>
+              <div className="bg-surface rounded-xl border border-border overflow-hidden">
                 {tareas && tareas.length > 0 ? (
-                  (tareas as (Tarea & { asignado: { nombre: string } | null })[]).map(t => (
-                    <div key={t.id} className="px-4 py-3">
-                      <div className="flex items-start justify-between gap-2">
-                        <p className="text-sm font-medium text-gray-900 leading-snug">{t.titulo}</p>
-                        <PrioridadBadge prioridad={t.prioridad} />
+                  <div className="divide-y divide-border">
+                    {(tareas as (Tarea & { asignado: { nombre: string } | null })[]).map(t => (
+                      <div key={t.id} className="px-4 py-3 hover:bg-surface-raised transition-colors">
+                        <div className="flex items-start justify-between gap-2">
+                          <p className="text-sm font-medium text-ink-900 leading-snug">{t.titulo}</p>
+                          <PrioridadBadge prioridad={t.prioridad} />
+                        </div>
+                        {t.asignado && (
+                          <p className="text-xs text-ink-500 mt-1">{t.asignado.nombre}</p>
+                        )}
+                        {t.vence_en && (
+                          <p className="text-xs text-ink-300 mt-0.5">
+                            Vence: {new Date(t.vence_en).toLocaleDateString('es-CO')}
+                          </p>
+                        )}
                       </div>
-                      {t.asignado && (
-                        <p className="text-xs text-gray-400 mt-1">{t.asignado.nombre}</p>
-                      )}
-                      {t.vence_en && (
-                        <p className="text-xs text-gray-400">Vence: {new Date(t.vence_en).toLocaleDateString('es-CO')}</p>
-                      )}
-                    </div>
-                  ))
+                    ))}
+                  </div>
                 ) : (
-                  <div className="p-6 text-center text-gray-400 text-sm">Sin tareas pendientes</div>
+                  <div className="p-6 text-center text-ink-300 text-sm">Sin tareas pendientes</div>
                 )}
-                <div className="px-4 py-3">
-                  <button className="text-sm text-blue-600 font-medium hover:text-blue-700">
+                <div className="px-4 py-3 border-t border-border bg-surface-raised">
+                  <button className="text-sm text-primary font-medium hover:text-primary-hover transition-colors">
                     + Nueva tarea
                   </button>
                 </div>
@@ -116,36 +114,80 @@ export default async function AdminPage() {
   )
 }
 
-function KpiCard({ label, value, color, icon }: {
-  label: string; value: string | number; color: string; icon: string
+type KpiVariant = 'danger' | 'warning' | 'success' | 'primary'
+
+const KPI_STYLES: Record<KpiVariant, { wrap: string; icon: string; value: string }> = {
+  danger:  { wrap: 'bg-surface border-border',      icon: 'bg-danger-pale text-danger-dark',   value: 'text-danger-dark' },
+  warning: { wrap: 'bg-surface border-border',      icon: 'bg-warning-pale text-warning-dark', value: 'text-warning-dark' },
+  success: { wrap: 'bg-surface border-border',      icon: 'bg-success-pale text-success-dark', value: 'text-ink-900' },
+  primary: { wrap: 'bg-surface border-border',      icon: 'bg-primary-pale text-primary',      value: 'text-ink-900' },
+}
+
+function KpiCard({ label, value, variant, icon }: {
+  label: string; value: string | number; variant: KpiVariant; icon: React.ReactNode
 }) {
-  const colors: Record<string, string> = {
-    red: 'bg-red-50 text-red-700',
-    orange: 'bg-orange-50 text-orange-700',
-    green: 'bg-green-50 text-green-700',
-    blue: 'bg-blue-50 text-blue-700',
-  }
+  const s = KPI_STYLES[variant]
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5">
-      <div className={`inline-flex items-center justify-center w-10 h-10 rounded-lg text-lg mb-3 ${colors[color]}`}>
+    <div className={`rounded-xl border p-5 ${s.wrap}`}>
+      <div className={`inline-flex items-center justify-center w-9 h-9 rounded-lg mb-3 ${s.icon}`}>
         {icon}
       </div>
-      <p className="text-2xl font-bold text-gray-900">{value}</p>
-      <p className="text-xs text-gray-500 mt-1">{label}</p>
+      <p className={`text-2xl font-bold ${s.value}`}>{value}</p>
+      <p className="text-xs text-ink-500 mt-1 leading-snug">{label}</p>
     </div>
   )
 }
 
 function PrioridadBadge({ prioridad }: { prioridad: string }) {
   const map: Record<string, string> = {
-    critica: 'bg-red-100 text-red-700',
-    alta: 'bg-orange-100 text-orange-700',
-    media: 'bg-yellow-100 text-yellow-700',
-    baja: 'bg-gray-100 text-gray-600',
+    critica: 'bg-danger-pale text-danger-dark',
+    alta:    'bg-warning-pale text-warning-dark',
+    media:   'bg-primary-pale text-primary',
+    baja:    'bg-surface-raised text-ink-500',
   }
   return (
     <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${map[prioridad] ?? map.baja}`}>
       {prioridad}
     </span>
+  )
+}
+
+function EmptyState({ label }: { label: string }) {
+  return (
+    <div className="bg-surface rounded-xl border border-border p-8 text-center text-ink-300 text-sm">
+      {label}
+    </div>
+  )
+}
+
+function IconAlert() {
+  return (
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+    </svg>
+  )
+}
+
+function IconClipboard() {
+  return (
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+    </svg>
+  )
+}
+
+function IconCheck() {
+  return (
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  )
+}
+
+function IconTruck() {
+  return (
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0M13 6H5l-2 4v5h2m8-9h4l2 4v5h-2m-4-9v9" />
+    </svg>
   )
 }
