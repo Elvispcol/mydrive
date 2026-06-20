@@ -53,7 +53,7 @@ export function DonutChart({ data, title, total }: Props) {
                 ))}
               </Pie>
               <Tooltip
-                formatter={(value: number, name: string) => [value, name]}
+                formatter={(value, name) => [value, name]}
                 contentStyle={{
                   background: 'var(--color-surface)',
                   border: '1px solid var(--color-border)',
