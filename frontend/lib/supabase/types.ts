@@ -30,6 +30,10 @@ export interface Region {
   creado_en: string
 }
 
+export type TipoLicencia = 'A1' | 'A2' | 'B1' | 'B2' | 'B3' | 'C1' | 'C2' | 'C3'
+export type TipoAsignacion = 'beneficio' | 'herramienta_trabajo' | 'seguridad' | 'representacion' | 'otro'
+export type TipoDocumentoVehiculo = 'soat' | 'tecnomecanica' | 'poliza_rc' | 'poliza_todo_riesgo' | 'tarjeta_operacion' | 'otro'
+
 export interface Usuario {
   id: string
   auth_id: string | null
@@ -40,6 +44,13 @@ export interface Usuario {
   email: string
   documento: string | null
   telefono: string | null
+  celular: string | null
+  ciudad: string | null
+  cargo: string | null
+  foto_url: string | null
+  tipo_licencia: TipoLicencia | null
+  licencia_expedicion: string | null
+  licencia_vencimiento: string | null
   activo: boolean
   creado_en: string
 }
@@ -62,10 +73,25 @@ export interface Asignacion {
   org_id: string
   vehiculo_id: string
   usuario_id: string
+  tipo_asignacion: TipoAsignacion | null
   desde: string
   hasta: string | null
   motivo_fin: string | null
   creado_en: string
+}
+
+export interface DocumentoVehiculo {
+  id: string
+  org_id: string | null
+  vehiculo_id: string
+  tipo: TipoDocumentoVehiculo
+  numero: string | null
+  vence_en: string
+  archivo_url: string | null
+  observaciones: string | null
+  creado_por: string | null
+  creado_en: string
+  updated_at: string | null
 }
 
 export interface ChecklistPlantilla {
@@ -196,6 +222,7 @@ export type Database = {
       tarea: { Row: Tarea; Insert: Partial<Tarea>; Update: Partial<Tarea> }
       mantenimiento: { Row: Mantenimiento; Insert: Partial<Mantenimiento>; Update: Partial<Mantenimiento> }
       mantenimiento_preventivo: { Row: MantenimientoPreventivo; Insert: Partial<MantenimientoPreventivo>; Update: Partial<MantenimientoPreventivo> }
+      documento_vehiculo: { Row: DocumentoVehiculo; Insert: Partial<DocumentoVehiculo>; Update: Partial<DocumentoVehiculo> }
     }
     Functions: {
       mydrive_org_id: { Args: Record<string, never>; Returns: string }

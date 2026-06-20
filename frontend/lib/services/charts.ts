@@ -1,5 +1,110 @@
 import { createClient } from '@/lib/supabase/server'
 
+// ─── Métricas de flota ──────────────────────────────────────────────────────
+
+export interface FlotaStats {
+  total: number
+  asignados: number
+  sin_asignar: number
+  en_mantenimiento: number
+  con_novedad: number
+}
+
+export async function flotaStats(): Promise<FlotaStats> {
+  const supabase = await createClient()
+  const [total, asignados, enMant, conNovedad] = await Promise.all([
+    supabase.from('vehiculo').select('*', { count: 'exact', head: true }),
+    supabase.from('asignacion').select('vehiculo_id', { count: 'exact', head: true }).is('hasta', null),
+    supabase.from('vehiculo').select('*', { count: 'exact', head: true }).eq('estado', 'mantenimiento'),
+    supabase.from('novedad').select('vehiculo_id').eq('estado', 'abierta').not('vehiculo_id', 'is', null),
+  ])
+  const vehiculosConNovedad = new Set((conNovedad.data ?? []).map((n: { vehiculo_id: string }) => n.vehiculo_id)).size
+  const t = total.count ?? 0
+  const a = asignados.count ?? 0
+  return {
+    total: t,
+    asignados: a,
+    sin_asignar: t - a,
+    en_mantenimiento: enMant.count ?? 0,
+    con_novedad: vehiculosConNovedad,
+  }
+}
+
+// ─── Cumplimiento de mantenimientos ─────────────────────────────────────────
+
+export interface CumplimientoMantenimiento {
+  programados_mes: number
+  completados_mes: number
+  vencidos: number
+  proximos_15_dias: number
+  pct_cumplimiento: number
+}
+
+export async function cumplimientoMantenimientos(): Promise<CumplimientoMantenimiento> {
+  const supabase = await createClient()
+  const now = new Date()
+  const inicioMes = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10)
+  const finMes    = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().slice(0, 10)
+  const en15      = new Date(now.getTime() + 15 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
+  const hoy       = now.toISOString().slice(0, 10)
+
+  const [programados, completados, vencidos, proximos] = await Promise.all([
+    supabase.from('mantenimiento_preventivo')
+      .select('*', { count: 'exact', head: true })
+      .gte('fecha_programada', inicioMes)
+      .lte('fecha_programada', finMes),
+    supabase.from('mantenimiento_preventivo')
+      .select('*', { count: 'exact', head: true })
+      .eq('estado', 'completado')
+      .gte('fecha_realizada', inicioMes)
+      .lte('fecha_realizada', finMes),
+    supabase.from('mantenimiento_preventivo')
+      .select('*', { count: 'exact', head: true })
+      .eq('estado', 'vencido'),
+    supabase.from('mantenimiento_preventivo')
+      .select('*', { count: 'exact', head: true })
+      .eq('estado', 'pendiente')
+      .gte('fecha_programada', hoy)
+      .lte('fecha_programada', en15),
+  ])
+
+  const prog = programados.count ?? 0
+  const comp = completados.count ?? 0
+  return {
+    programados_mes:  prog,
+    completados_mes:  comp,
+    vencidos:         vencidos.count ?? 0,
+    proximos_15_dias: proximos.count ?? 0,
+    pct_cumplimiento: prog > 0 ? Math.round((comp / prog) * 100) : 0,
+  }
+}
+
+// ─── Preoperacionales del día ────────────────────────────────────────────────
+
+export interface PreoperacionalesHoy {
+  esperados: number
+  realizados: number
+  pct_cumplimiento: number
+}
+
+export async function preoperacionalesHoy(): Promise<PreoperacionalesHoy> {
+  const supabase = await createClient()
+  const hoy = new Date().toISOString().slice(0, 10)
+
+  const [esperados, realizados] = await Promise.all([
+    supabase.from('asignacion').select('*', { count: 'exact', head: true }).is('hasta', null),
+    supabase.from('preoperacional').select('*', { count: 'exact', head: true }).eq('fecha', hoy),
+  ])
+
+  const e = esperados.count ?? 0
+  const r = realizados.count ?? 0
+  return {
+    esperados: e,
+    realizados: r,
+    pct_cumplimiento: e > 0 ? Math.round((r / e) * 100) : 0,
+  }
+}
+
 export interface NovedadesPorEstado {
   abierta: number
   en_proceso: number
