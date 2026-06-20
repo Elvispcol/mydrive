@@ -77,7 +77,7 @@ mydrive/
 │   └── functions/
 │       ├── crear-novedad/     Edge Function: genera novedades desde preoperacional (desplegada)
 │       └── notificar-evento/  Edge Function: notifica eventos y crea novedades (desplegada)
-├── frontend/          Next.js 15 App Router + Supabase SSR
+├── frontend/          Next.js 16.2.9 App Router + Supabase SSR
 │   ├── app/           Páginas (login, /admin, /conductor, /director)
 │   ├── components/    Componentes reutilizables
 │   └── lib/supabase/  Clientes y tipos TypeScript
@@ -93,7 +93,28 @@ npm run dev
 # → http://localhost:3000
 ```
 
-Las credenciales de Supabase ya están en `frontend/.env.local` (no versionado).
+Las credenciales de Supabase van en `frontend/.env.local` (no versionado):
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://hilyuohcubhrvdzapplp.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<anon_key>
+```
+
+### Windows: ruta con `#` en el nombre de carpeta
+
+Next.js 16 App Router usa `path#exportName` internamente (React Server Components
+manifest). Si el proyecto vive en una ruta que contiene `#` (ej: `#. Proyectos IA
+Empresas`), webpack corrompe las rutas y el servidor falla con 500.
+
+**Solución permanente:** renombrar la carpeta padre eliminando el `#`.
+
+**Solución temporal:** ejecutar el servidor desde `cmd.exe` apuntando a una copia
+del proyecto en una ruta limpia (ej: `C:\mydrive\frontend`):
+
+```bat
+cd /d C:\mydrive\frontend
+npm run dev
+```
 
 ## Documentación técnica
 

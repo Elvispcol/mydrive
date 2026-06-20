@@ -1,18 +1,16 @@
 import type { Metadata } from 'next'
-import { Geist } from 'next/font/google'
 import './globals.css'
-
-const geist = Geist({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'MyDrive — Gestión de flota vehicular',
   description: 'Centro de control para administradores de flota corporativa.',
+  icons: { icon: '/favicon.ico' },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className="h-full">
-      <body className={`${geist.className} h-full antialiased`}>
+      <body className="h-full antialiased">
         {children}
       </body>
     </html>
