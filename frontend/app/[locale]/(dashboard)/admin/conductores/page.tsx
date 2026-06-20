@@ -33,7 +33,6 @@ export default async function AdminConductoresPage({ params }: { params: Promise
           <ConductorListaPage
             conductores={conductores}
             basePath={`/${locale}/admin/conductores`}
-            nombre={perfil.nombre}
             actions={<LogoutButton />}
           />
         </div>

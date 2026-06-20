@@ -15,7 +15,6 @@ import { KpiSkeleton, CardSkeleton } from '@/shared/components/ui/Skeleton'
 import { ProgressWidget } from '@/shared/components/ui/ProgressWidget'
 import { NovedadCard } from '@/features/novedades/components/NovedadCard'
 import { BarChartVertical } from '@/shared/components/charts/BarChartVertical'
-import { formatDate } from '@/shared/utils/formatters'
 import type { Locale } from '@/lib/i18n/config'
 
 export default async function AdminPage({ params }: { params: Promise<{ locale: Locale }> }) {

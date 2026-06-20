@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import ChecklistForm from '@/components/ChecklistForm'
 import LogoutButton from '@/components/LogoutButton'
@@ -83,11 +84,11 @@ export default async function ConductorPage() {
             <p className="font-semibold text-sm">Preoperacional</p>
             <p className="text-xs text-blue-200 mt-0.5">Inspección diaria</p>
           </div>
-          <a href="/conductor/evento"
+          <Link href="/conductor/evento"
             className="bg-white border border-gray-200 rounded-xl p-4 text-gray-700 hover:bg-gray-50 transition-colors">
             <p className="font-semibold text-sm">Reportar evento</p>
             <p className="text-xs text-gray-400 mt-0.5">Choque o incidencia</p>
-          </a>
+          </Link>
         </div>
 
         {/* Checklist */}

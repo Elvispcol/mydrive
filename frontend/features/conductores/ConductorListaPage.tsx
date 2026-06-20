@@ -7,11 +7,10 @@ import type { ConductorConVehiculo } from '@/lib/services/conductores'
 interface Props {
   conductores: ConductorConVehiculo[]
   basePath: string
-  nombre: string
   actions?: ReactNode
 }
 
-export function ConductorListaPage({ conductores, basePath, nombre, actions }: Props) {
+export function ConductorListaPage({ conductores, basePath, actions }: Props) {
   const conAlerta = conductores.filter(c => (c.dias_para_vencer_licencia ?? 999) <= 30).length
 
   return (
