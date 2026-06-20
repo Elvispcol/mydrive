@@ -1,12 +1,14 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import type { Database } from './types'
 
-// Cliente para Server Components y Server Actions
+// createServerClient<any> evita el false-positive never en .single()
+// que ocurre con tipos artesanales. Pendiente supabase gen types typescript
+// cuando se instale la CLI para obtener tipos inferidos correctamente.
 export async function createClient() {
   const cookieStore = await cookies()
 
-  return createServerClient<Database>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return createServerClient<any>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
