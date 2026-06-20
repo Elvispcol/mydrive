@@ -10,6 +10,8 @@ export type EstadoTarea = 'abierta' | 'en_proceso' | 'cerrada'
 export type ResultadoPreop = 'ok' | 'con_novedades'
 export type EstadoEvento = 'reportado' | 'en_gestion' | 'cerrado'
 export type OrigenNovedad = 'preoperacional' | 'evento' | 'manual' | 'documento'
+export type EstadoMantenimientoPreventivo = 'pendiente' | 'completado' | 'vencido'
+export type TipoMantenimientoPreventivo = 'aceite' | 'frenos' | 'llantas' | 'filtros' | 'revision_general' | 'otro'
 
 export interface Organizacion {
   id: string
@@ -159,6 +161,22 @@ export interface Mantenimiento {
   creado_en: string
 }
 
+export interface MantenimientoPreventivo {
+  id: string
+  org_id: string
+  vehiculo_id: string
+  tipo: TipoMantenimientoPreventivo
+  descripcion: string | null
+  kilometraje_alerta: number | null
+  fecha_programada: string
+  fecha_realizada: string | null
+  estado: EstadoMantenimientoPreventivo
+  observaciones: string | null
+  creado_por: string | null
+  creado_en: string
+  updated_at: string | null
+}
+
 // Tipo placeholder para el cliente Supabase tipado
 // Se puede reemplazar con los tipos generados por `supabase gen types typescript`
 export type Database = {
@@ -177,6 +195,7 @@ export type Database = {
       novedad: { Row: Novedad; Insert: Partial<Novedad>; Update: Partial<Novedad> }
       tarea: { Row: Tarea; Insert: Partial<Tarea>; Update: Partial<Tarea> }
       mantenimiento: { Row: Mantenimiento; Insert: Partial<Mantenimiento>; Update: Partial<Mantenimiento> }
+      mantenimiento_preventivo: { Row: MantenimientoPreventivo; Insert: Partial<MantenimientoPreventivo>; Update: Partial<MantenimientoPreventivo> }
     }
     Functions: {
       mydrive_org_id: { Args: Record<string, never>; Returns: string }

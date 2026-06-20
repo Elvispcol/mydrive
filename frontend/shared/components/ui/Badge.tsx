@@ -46,3 +46,21 @@ export const ORIGEN_VARIANT: Record<string, BadgeVariant> = {
   manual:         'muted',
   documento:      'info',
 }
+
+export const ESTADO_VEHICULO_VARIANT: Record<string, BadgeVariant> = {
+  activo:        'success',
+  mantenimiento: 'warning',
+  inactivo:      'muted',
+  vendido:       'danger',
+}
+
+export const ESTADO_MANTENIMIENTO_VARIANT: Record<string, BadgeVariant> = {
+  pendiente:  'warning',
+  completado: 'success',
+  vencido:    'danger',
+}
+
+export const RESULTADO_PREOP_VARIANT: Record<string, BadgeVariant> = {
+  ok:            'success',
+  con_novedades: 'danger',
+}
