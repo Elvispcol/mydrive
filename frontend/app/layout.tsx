@@ -3,7 +3,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'MyDrive — Gestión de flota vehicular',
-  description: 'Centro de control para administradores de flota corporativa.',
+  description: 'Centro de control PMI para gestión de flota corporativa a escala global.',
   icons: { icon: '/favicon.ico' },
 }
 
