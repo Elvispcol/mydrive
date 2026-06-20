@@ -1,25 +1,71 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-const cors = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+const ALLOWED_ORIGINS = [
+  'https://mydrive.vercel.app',
+  'https://mydrive-pmi.vercel.app',
+]
+
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
+const RATE_LIMIT = 10
+const RATE_WINDOW_MS = 60_000
+
+function corsHeaders(origin: string | null): Record<string, string> {
+  const allowed =
+    Deno.env.get('ENVIRONMENT') === 'development' ||
+    (origin && ALLOWED_ORIGINS.includes(origin))
+      ? origin ?? ALLOWED_ORIGINS[0]
+      : ALLOWED_ORIGINS[0]
+
+  return {
+    'Access-Control-Allow-Origin': allowed,
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Vary': 'Origin',
+  }
+}
+
+function checkRateLimit(userId: string): boolean {
+  const now = Date.now()
+  const entry = rateLimitMap.get(userId)
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(userId, { count: 1, resetAt: now + RATE_WINDOW_MS })
+    return true
+  }
+  if (entry.count >= RATE_LIMIT) return false
+  entry.count++
+  return true
 }
 
 serve(async (req) => {
+  const origin = req.headers.get('origin')
+  const cors = corsHeaders(origin)
+
   if (req.method === 'OPTIONS') return new Response('ok', { headers: cors })
+  if (req.method !== 'POST') return json({ error: 'Método no permitido' }, 405, cors)
+
+  const authHeader = req.headers.get('authorization') ?? ''
+  const userId = authHeader.replace('Bearer ', '').slice(0, 36)
+
+  if (!checkRateLimit(userId)) {
+    return json({ error: 'Demasiadas solicitudes. Intenta más tarde.' }, 429, cors)
+  }
 
   try {
-    const { evento_id } = await req.json()
+    const body = await req.json().catch(() => ({}))
+    const { evento_id } = body
 
-    if (!evento_id) return json({ error: 'evento_id requerido' }, 400)
+    if (!evento_id || typeof evento_id !== 'string' || !UUID_REGEX.test(evento_id)) {
+      return json({ error: 'evento_id inválido o ausente' }, 400, cors)
+    }
 
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
     )
 
-    // Cargar evento con datos del vehículo y el conductor
     const { data: evento, error } = await supabase
       .from('evento')
       .select(`
@@ -30,9 +76,8 @@ serve(async (req) => {
       .eq('id', evento_id)
       .single()
 
-    if (error || !evento) return json({ error: 'Evento no encontrado' }, 404)
+    if (error || !evento) return json({ error: 'Evento no encontrado' }, 404, cors)
 
-    // Registrar novedad en el tablero del administrador
     const { data: novedad, error: errNov } = await supabase
       .from('novedad')
       .insert({
@@ -41,7 +86,7 @@ serve(async (req) => {
         vehiculo_id: evento.vehiculo_id,
         origen_tipo: 'evento',
         origen_id: evento.id,
-        titulo: `${evento.tipo.toUpperCase()}: ${(evento.vehiculo as any)?.placa ?? 'vehículo sin placa'}`,
+        titulo: `${(evento.tipo as string).toUpperCase()}: ${(evento.vehiculo as any)?.placa ?? 'vehículo sin placa'}`,
         descripcion: evento.descripcion,
         prioridad: 'critica',
         estado: 'abierta',
@@ -51,19 +96,17 @@ serve(async (req) => {
 
     if (errNov) throw errNov
 
-    // Enviar correo de alerta con Resend
     await enviarCorreo(evento)
 
-    return json({ novedad_id: novedad.id }, 201)
+    return json({ novedad_id: novedad.id }, 201, cors)
   } catch (err: any) {
-    return json({ error: err.message }, 500)
+    return json({ error: err.message ?? 'Error interno' }, 500, cors)
   }
 })
 
 async function enviarCorreo(evento: any) {
   const apiKey = Deno.env.get('RESEND_API_KEY')
   const destino = Deno.env.get('CORREO_FLOTA_DESTINO')
-
   if (!apiKey || !destino) return
 
   const fecha = new Date(evento.creado_en).toLocaleString('es-CO', {
@@ -89,7 +132,7 @@ async function enviarCorreo(evento: any) {
         <h2 style="margin:0">Evento reportado: ${evento.tipo.toUpperCase()}</h2>
       </div>
       <table style="width:100%;border-collapse:collapse;background:#f9fafb;border:1px solid #e5e7eb">
-        ${fila('Vehículo', `${evento.vehiculo?.placa} — ${evento.vehiculo?.marca} ${evento.vehiculo?.modelo}`)}
+        ${fila('Vehículo', `${evento.vehiculo?.placa} — ${evento.vehiculo?.marca} ${evento.vehiculo?.modelo ?? ''}`)}
         ${fila('Conductor', `${evento.usuario?.nombre} · ${evento.usuario?.telefono ?? evento.usuario?.email}`)}
         ${fila('Tipo', evento.tipo)}
         ${fila('Descripción', evento.descripcion ?? '—')}
@@ -98,7 +141,7 @@ async function enviarCorreo(evento: any) {
         ${evento.foto_url ? fila('Foto', `<a href="${evento.foto_url}">Ver foto adjunta</a>`) : ''}
       </table>
       <p style="padding:12px 16px;color:#6b7280;font-size:13px">
-        La novedad ya fue registrada en MyDrive y está disponible en el tablero del administrador.
+        La novedad fue registrada en MyDrive y está disponible en el tablero del administrador.
       </p>
     </div>
   `
@@ -107,7 +150,7 @@ async function enviarCorreo(evento: any) {
     method: 'POST',
     headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      from: 'MyDrive <alertas@mydrive.app>',
+      from: 'MyDrive PMI <alertas@mydrive.app>',
       to: [destino],
       subject: `[MyDrive] ${evento.tipo.toUpperCase()} — ${evento.vehiculo?.placa ?? evento.id}`,
       html,
@@ -115,7 +158,7 @@ async function enviarCorreo(evento: any) {
   })
 }
 
-function json(data: unknown, status: number) {
+function json(data: unknown, status: number, cors: Record<string, string>) {
   return new Response(JSON.stringify(data), {
     status,
     headers: { ...cors, 'Content-Type': 'application/json' },

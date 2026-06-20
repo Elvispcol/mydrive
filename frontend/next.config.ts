@@ -2,10 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   webpack: (config) => {
-    // Prevent webpack from resolving junctions to real paths.
-    // The project path contains '#' which webpack treats as a URL fragment,
-    // corrupting module resolution. Running from C:\mydrive-dev (junction)
-    // keeps webpack paths clean.
+    // Prevent webpack from following junctions to real paths.
+    // The project path contains '#' which webpack treats as URL fragment —
+    // resolve.symlinks:false keeps paths clean when running from C:\mydrive\frontend.
     config.resolve = config.resolve ?? {};
     config.resolve.symlinks = false;
     return config;

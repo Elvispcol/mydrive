@@ -1,0 +1,146 @@
+{
+  "common": {
+    "appName": "MyDrive",
+    "tagline": "Fleet management",
+    "logout": "Sign out",
+    "logoutShort": "Sign out",
+    "back": "Back",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "noData": "No data",
+    "welcome": "Welcome, {name}",
+    "welcomeF": "Welcome, {name}"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "novedades": "Issues",
+    "tareas": "Tasks",
+    "vehiculos": "Vehicles",
+    "conductores": "Drivers",
+    "resumen": "Overview",
+    "regiones": "Regions"
+  },
+  "auth": {
+    "login": "Sign in",
+    "email": "Email address",
+    "emailPlaceholder": "you@company.com",
+    "password": "Password",
+    "passwordPlaceholder": "••••••••",
+    "submit": "Sign in",
+    "loading": "Signing in...",
+    "error": "Incorrect email or password.",
+    "demo": {
+      "title": "Demo accounts:",
+      "director": "Director:",
+      "admin": "Admin:",
+      "conductor": "Driver:",
+      "password": "Password:"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "kpi": {
+      "novedadesAbiertas": "Open issues",
+      "tareasPendientes": "Pending tasks",
+      "preoperacionalesHoy": "Pre-ops today",
+      "vehiculosActivos": "Active vehicles"
+    },
+    "novedadesRecientes": "Recent issues",
+    "tareasPendientes": "Pending tasks",
+    "sinNovedades": "No open issues",
+    "sinTareas": "No pending tasks",
+    "nuevaTarea": "+ New task",
+    "vence": "Due:"
+  },
+  "director": {
+    "badge": "National view · Director",
+    "title": "National overview",
+    "kpi": {
+      "totalVehiculos": "Total vehicles",
+      "novedadesAbiertas": "Open issues",
+      "tareasAbiertas": "Open tasks",
+      "regionesActivas": "Active regions"
+    },
+    "detalleRegion": "Region breakdown",
+    "novedadesCriticas": "Critical open issues",
+    "sinRegiones": "No regions configured",
+    "sinCriticas": "No critical open issues",
+    "colRegion": "Region",
+    "colAdmin": "Admin"
+  },
+  "conductor": {
+    "preoperacional": "Pre-op inspection",
+    "preoperacionalDesc": "Daily inspection",
+    "reportarEvento": "Report incident",
+    "eventoDesc": "Collision or incident",
+    "asignadoATi": "Assigned to you",
+    "sinVehiculo": "No vehicle assigned. Contact your administrator.",
+    "sinChecklist": "No checklist configured. Contact your administrator.",
+    "necesitaVehiculo": "You need an assigned vehicle to complete the pre-op inspection."
+  },
+  "checklist": {
+    "itemsCount": "{n} items",
+    "criticosCount": "{n} critical",
+    "critico": "critical",
+    "notaPlaceholder": "Note about this failure (optional)",
+    "fallasAviso": "{n} failure detected. An issue will be created automatically.",
+    "fallasAvisoPlural": "{n} failures detected. Issues will be created automatically.",
+    "errorGuardar": "Save error. Please try again.",
+    "enviando": "Submitting...",
+    "enviar": "Submit inspection",
+    "sinResponder": "({n} unanswered)",
+    "exitoTitulo": "Inspection submitted",
+    "exitoNovedades": "{n} issues were created for critical failures. Your administrator was notified.",
+    "exitoUnaNovedades": "1 issue was created for a critical failure. Your administrator was notified.",
+    "exitoOk": "All good. No critical failures.",
+    "hacerOtro": "Start another inspection"
+  },
+  "evento": {
+    "title": "Report incident",
+    "tipo": "Incident type",
+    "tipoPlaceholder": "Select a type...",
+    "descripcion": "Description",
+    "descripcionPlaceholder": "Describe what happened, where, and under what circumstances...",
+    "error": "Error reporting the incident. Please try again.",
+    "enviando": "Reporting...",
+    "enviar": "Report incident",
+    "exitoTitulo": "Incident reported",
+    "exitoDesc": "Your administrator was notified and an issue was created on the dashboard.",
+    "volverInicio": "Back to home",
+    "tipos": {
+      "choque": "Collision",
+      "dano": "Mechanical damage",
+      "robo": "Theft / theft attempt",
+      "accidente": "Personal accident",
+      "otro": "Other"
+    }
+  },
+  "novedades": {
+    "estados": {
+      "abierta": "open",
+      "en_proceso": "in progress",
+      "cerrada": "closed"
+    },
+    "origenes": {
+      "preoperacional": "pre-op",
+      "evento": "incident",
+      "manual": "manual",
+      "documento": "document"
+    },
+    "prioridades": {
+      "critica": "critical",
+      "alta": "high",
+      "media": "medium",
+      "baja": "low"
+    },
+    "tiempoMin": "{n} min ago",
+    "tiempoHoras": "{n} h ago",
+    "tiempoDias": "{n} days ago"
+  },
+  "pagination": {
+    "next": "Next",
+    "prev": "Previous",
+    "showing": "Showing {from}–{to} of {total}"
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "common": {
+    "appName": "MyDrive",
+    "tagline": "Gestión de flota vehicular",
+    "logout": "Cerrar sesión",
+    "logoutShort": "Salir",
+    "back": "Volver",
+    "loading": "Cargando...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "noData": "Sin datos",
+    "welcome": "Bienvenido, {name}",
+    "welcomeF": "Bienvenida, {name}"
+  },
+  "nav": {
+    "dashboard": "Tablero",
+    "novedades": "Novedades",
+    "tareas": "Tareas",
+    "vehiculos": "Vehículos",
+    "conductores": "Conductores",
+    "resumen": "Resumen",
+    "regiones": "Regiones"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "tu@correo.com",
+    "password": "Contraseña",
+    "passwordPlaceholder": "••••••••",
+    "submit": "Entrar",
+    "loading": "Entrando...",
+    "error": "Correo o contraseña incorrectos.",
+    "demo": {
+      "title": "Cuentas de demo:",
+      "director": "Director:",
+      "admin": "Admin:",
+      "conductor": "Conductor:",
+      "password": "Contraseña:"
+    }
+  },
+  "dashboard": {
+    "title": "Tablero",
+    "kpi": {
+      "novedadesAbiertas": "Novedades abiertas",
+      "tareasPendientes": "Tareas pendientes",
+      "preoperacionalesHoy": "Preoperacionales hoy",
+      "vehiculosActivos": "Vehículos activos"
+    },
+    "novedadesRecientes": "Novedades recientes",
+    "tareasPendientes": "Tareas pendientes",
+    "sinNovedades": "Sin novedades abiertas",
+    "sinTareas": "Sin tareas pendientes",
+    "nuevaTarea": "+ Nueva tarea",
+    "vence": "Vence:"
+  },
+  "director": {
+    "badge": "Vista nacional · Director",
+    "title": "Resumen nacional",
+    "kpi": {
+      "totalVehiculos": "Total vehículos",
+      "novedadesAbiertas": "Novedades abiertas",
+      "tareasAbiertas": "Tareas abiertas",
+      "regionesActivas": "Regiones activas"
+    },
+    "detalleRegion": "Detalle por región",
+    "novedadesCriticas": "Novedades críticas abiertas",
+    "sinRegiones": "Sin regiones configuradas",
+    "sinCriticas": "Sin novedades críticas abiertas",
+    "colRegion": "Región",
+    "colAdmin": "Admin"
+  },
+  "conductor": {
+    "preoperacional": "Preoperacional",
+    "preoperacionalDesc": "Inspección diaria",
+    "reportarEvento": "Reportar evento",
+    "eventoDesc": "Choque o incidencia",
+    "asignadoATi": "Asignado a ti",
+    "sinVehiculo": "No tienes un vehículo asignado. Contacta a tu administrador.",
+    "sinChecklist": "No hay checklist configurado. Contacta a tu administrador.",
+    "necesitaVehiculo": "Necesitas un vehículo asignado para hacer el preoperacional."
+  },
+  "checklist": {
+    "itemsCount": "{n} ítems",
+    "criticosCount": "{n} críticos",
+    "critico": "crítico",
+    "notaPlaceholder": "Nota sobre la falla (opcional)",
+    "fallasAviso": "{n} falla detectada. Se generará una novedad automáticamente.",
+    "fallasAvisoPlural": "{n} fallas detectadas. Se generarán novedades automáticamente.",
+    "errorGuardar": "Error al guardar. Intenta de nuevo.",
+    "enviando": "Enviando...",
+    "enviar": "Enviar preoperacional",
+    "sinResponder": "({n} sin responder)",
+    "exitoTitulo": "Preoperacional enviado",
+    "exitoNovedades": "Se generaron {n} novedades por fallas críticas. Tu administrador fue notificado.",
+    "exitoUnaNovedades": "Se generó 1 novedad por falla crítica. Tu administrador fue notificado.",
+    "exitoOk": "Todo en orden. Sin fallas críticas.",
+    "hacerOtro": "Hacer otro preoperacional"
+  },
+  "evento": {
+    "title": "Reportar evento",
+    "tipo": "Tipo de evento",
+    "tipoPlaceholder": "Selecciona un tipo...",
+    "descripcion": "Descripción",
+    "descripcionPlaceholder": "Describe qué pasó, dónde y en qué condiciones...",
+    "error": "Error al reportar el evento. Intenta de nuevo.",
+    "enviando": "Reportando...",
+    "enviar": "Reportar evento",
+    "exitoTitulo": "Evento reportado",
+    "exitoDesc": "El administrador fue notificado y se creó una novedad en el tablero.",
+    "volverInicio": "Volver al inicio",
+    "tipos": {
+      "choque": "Choque / colisión",
+      "dano": "Daño mecánico",
+      "robo": "Robo / intento de robo",
+      "accidente": "Accidente personal",
+      "otro": "Otro"
+    }
+  },
+  "novedades": {
+    "estados": {
+      "abierta": "abierta",
+      "en_proceso": "en proceso",
+      "cerrada": "cerrada"
+    },
+    "origenes": {
+      "preoperacional": "preoperacional",
+      "evento": "evento",
+      "manual": "manual",
+      "documento": "documento"
+    },
+    "prioridades": {
+      "critica": "crítica",
+      "alta": "alta",
+      "media": "media",
+      "baja": "baja"
+    },
+    "tiempoMin": "hace {n} min",
+    "tiempoHoras": "hace {n} h",
+    "tiempoDias": "hace {n} días"
+  },
+  "pagination": {
+    "next": "Siguiente",
+    "prev": "Anterior",
+    "showing": "Mostrando {from}–{to} de {total}"
+  }
+}
