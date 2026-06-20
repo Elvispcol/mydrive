@@ -21,6 +21,14 @@ out/
 .temp/
 supabase/.env
 
+# Frontend generado
+frontend/.next/
+frontend/node_modules/
+frontend/.env.local
+
+# Scripts temporales de setup
+*.mjs
+
 # Sistema
 .DS_Store
 Thumbs.db
