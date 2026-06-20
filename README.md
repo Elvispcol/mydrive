@@ -34,16 +34,27 @@ Preoperacional con falla
 Fase 0  ▓▓▓▓▓░░░░░  en preparación
 Fase 1  ▓▓▓▓▓▓▓▓▓▓  COMPLETADA (maqueta + MVP funcional)
 Fase 2  ▓▓▓▓▓▓▓▓▓▓  COMPLETADA (base de datos + RLS)
-Fase 3  ▓▓▓▓▓▓▓▓░░  EN CURSO  (frontend Next.js conectado)
+Fase 3  ▓▓▓▓▓▓▓▓▓▓  COMPLETADA (frontend + edge functions desplegadas)
+Fase 4  ░░░░░░░░░░  PENDIENTE  (hoja de vida, mantenimientos, dashboards)
 ```
 
 ## Infraestructura activa
 
 | Servicio | URL / Referencia |
 |----------|-----------------|
-| Supabase (BD + Auth) | `https://hilyuohcubhrvdzapplp.supabase.co` |
+| Supabase (BD + Auth + Functions) | `https://hilyuohcubhrvdzapplp.supabase.co` |
+| Edge Function crear-novedad | `…/functions/v1/crear-novedad` |
+| Edge Function notificar-evento | `…/functions/v1/notificar-evento` |
 | Repositorio | `https://github.com/Elvispcol/mydrive` |
 | Frontend (local) | `cd frontend && npm run dev` |
+| Frontend (producción) | Vercel — pendiente de despliegue |
+
+## Próximos pasos
+
+1. Configurar Resend — agregar `RESEND_API_KEY` y `CORREO_FLOTA_DESTINO` en Supabase Secrets
+2. Desplegar frontend en Vercel
+3. Prueba end-to-end: login → preoperacional → novedad → tarea
+4. Iniciar Fase 4: hoja de vida completa, mantenimientos preventivos, dashboards
 
 ## Cuentas de demo
 
@@ -62,10 +73,10 @@ mydrive/
 ├── db/
 │   ├── migrations/    Esquema de base de datos (aplicado en Supabase)
 │   └── policies/      Políticas de Row Level Security (activas)
-├── backend/
-│   └── src/
-│       ├── crear-novedad/     Edge Function: genera novedades desde preoperacional
-│       └── notificar-evento/  Edge Function: notifica eventos y crea novedades
+├── supabase/
+│   └── functions/
+│       ├── crear-novedad/     Edge Function: genera novedades desde preoperacional (desplegada)
+│       └── notificar-evento/  Edge Function: notifica eventos y crea novedades (desplegada)
 ├── frontend/          Next.js 15 App Router + Supabase SSR
 │   ├── app/           Páginas (login, /admin, /conductor, /director)
 │   ├── components/    Componentes reutilizables

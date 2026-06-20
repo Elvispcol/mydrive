@@ -60,11 +60,29 @@ Piloto controlado con un subconjunto de la flota, escalamiento progresivo, y
 adaptación para otros países de las Américas (cada uno con su régimen de datos). Es
 también cuando el producto está listo para el cliente #2.
 
-## Estado actual
+## Estado actual (19/06/2026)
 
 ```
 Fase 0  ▓▓▓▓▓░░░░░  en preparación
-Fase 1  ░░░░░░░░░░  pendiente (maqueta v0)
-Fase 2  ▓▓▓▓▓▓▓▓▓▓  COMPLETADA (este repositorio)
-Fase 3  ░░░░░░░░░░  pendiente
+Fase 1  ▓▓▓▓▓▓▓▓▓▓  COMPLETADA — prompts v0 + maqueta navegable
+Fase 2  ▓▓▓▓▓▓▓▓▓▓  COMPLETADA — 4 migraciones SQL + 25 políticas RLS en Supabase
+Fase 3  ▓▓▓▓▓▓▓▓▓▓  COMPLETADA — frontend Next.js 15 + edge functions desplegadas
+Fase 4  ░░░░░░░░░░  PENDIENTE  — hoja de vida, mantenimientos, dashboards
 ```
+
+### Entregables de la Fase 3
+
+- Frontend Next.js 15 con Auth SSR, router por rol y tres vistas (director / admin / conductor)
+- ChecklistForm interactivo: envía preoperacional a BD y dispara `crear-novedad` ante fallas críticas
+- Reporte de evento con foto y ubicación GPS
+- Edge Function `crear-novedad` desplegada en Supabase
+- Edge Function `notificar-evento` desplegada en Supabase (correo vía Resend, pendiente de secret)
+- Tipos TypeScript completos del esquema (`lib/supabase/types.ts`)
+
+### Pendiente para cerrar Fase 3 → producción
+
+| Tarea | Estado |
+|-------|--------|
+| Configurar Resend (`RESEND_API_KEY` + `CORREO_FLOTA_DESTINO` en Supabase Secrets) | Pendiente |
+| Desplegar frontend en Vercel | Pendiente |
+| Prueba end-to-end del flujo completo | Pendiente |
