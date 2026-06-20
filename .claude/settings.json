@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(run)",
+      "Skill(run:*)",
+      "Bash(cat > *)",
+      "Bash(npm run *)",
+      "Bash(echo \"PID: $!\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "Bash(npx playwright *)",
+      "Bash(mkdir -p /tmp/pw-snap)",
+      "Read(//tmp/**)",
+      "Bash(npm init *)",
+      "Bash(npm install *)",
+      "Bash(where chromium-cli *)",
+      "Bash(where chromium *)",
+      "Bash(where google-chrome *)",
+      "Read(//c/Program Files/Google/Chrome/Application//**)",
+      "Read(//c/Program Files \\(x86\\)/Microsoft/Edge/Application//**)",
+      "Read(//c/Users/PC/Desktop/mydrive-screenshots/**)",
+      "Bash(curl -s http://localhost:3000/login)",
+      "Bash(taskkill //F //IM node.exe)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/login)",
+      "Bash(python3 -c \"import sys,json,re; html=sys.stdin.read\\(\\); m=re.search\\(r'\\\\\"message\\\\\":\\\\\"\\([^\\\\\"]+\\)\\\\\"', html\\); print\\(m.group\\(1\\) if m else html[:500]\\)\")",
+      "Bash(cp \"C:/mydrive-dev/frontend/app/globals.css\" \"C:/mydrive-dev/frontend/app/globals.css.bak\")",
+      "Bash(cp /tmp/globals-new.css \"C:/mydrive-dev/frontend/app/globals.css\")",
+      "Read(//c/Users/PC/AppData/Local/Temp/**)",
+      "Bash(node -e \"console.log\\(process.cwd\\(\\)\\)\")",
+      "Bash(cp \"C:/mydrive-dev/frontend/app/favicon.ico\" \"C:/mydrive-dev/frontend/public/favicon.ico\" && rm \"C:/mydrive-dev/frontend/app/favicon.ico\" && rm \"C:/mydrive-dev/frontend/app/globals.css.bak\" && echo \"OK\")",
+      "Bash(curl -s http://localhost:3000/login 2>&1 | grep -o '\"message\":\"[^\"]*\"' | head -1 | cut -c1-500 *)",
+      "Bash(cmd //c \"cd /d C:\\\\mydrive-dev\\\\frontend && node -e \\\\\"console.log\\(process.cwd\\(\\)\\)\\\\\"\")",
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue)",
+      "PowerShell(Stop-Process -Force)",
+      "Read(//c/mydrive/frontend/**)",
+      "PowerShell(New-Item -ItemType Directory -Force \"C:\\\\Temp\")"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\PC\\Documents\\#. Proyectos IA Empresas\\MyDrive\\frontend",
+      "C:\\mydrive-dev\\frontend\\public",
+      "C:\\Temp"
+    ]
+  }
+}

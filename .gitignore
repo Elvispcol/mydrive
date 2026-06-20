@@ -29,6 +29,9 @@ frontend/.env.local
 # Scripts temporales de setup
 *.mjs
 
+# Claude Code (settings.local.json contiene tokens — nunca commitear)
+.claude/settings.local.json
+
 # Sistema
 .DS_Store
 Thumbs.db

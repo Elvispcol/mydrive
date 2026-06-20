@@ -60,24 +60,35 @@ Piloto controlado con un subconjunto de la flota, escalamiento progresivo, y
 adaptación para otros países de las Américas (cada uno con su régimen de datos). Es
 también cuando el producto está listo para el cliente #2.
 
-## Estado actual (19/06/2026)
+## Estado actual (20/06/2026)
 
 ```
 Fase 0  ▓▓▓▓▓░░░░░  en preparación
 Fase 1  ▓▓▓▓▓▓▓▓▓▓  COMPLETADA — prompts v0 + maqueta navegable
 Fase 2  ▓▓▓▓▓▓▓▓▓▓  COMPLETADA — 4 migraciones SQL + 25 políticas RLS en Supabase
-Fase 3  ▓▓▓▓▓▓▓▓▓▓  COMPLETADA — frontend Next.js 15 + edge functions desplegadas
-Fase 4  ░░░░░░░░░░  PENDIENTE  — hoja de vida, mantenimientos, dashboards
+Fase 3  ▓▓▓▓▓▓▓▓▓▓  COMPLETADA — frontend Next.js 16.2.9 verificado visualmente
+Fase 4  ░░░░░░░░░░  EN CURSO   — hoja de vida, mantenimientos, dashboards
 ```
 
 ### Entregables de la Fase 3
 
-- Frontend Next.js 15 con Auth SSR, router por rol y tres vistas (director / admin / conductor)
+- Frontend Next.js 16.2.9 con Auth SSR, router por rol y tres vistas (director / admin / conductor)
 - ChecklistForm interactivo: envía preoperacional a BD y dispara `crear-novedad` ante fallas críticas
 - Reporte de evento con foto y ubicación GPS
 - Edge Function `crear-novedad` desplegada en Supabase
 - Edge Function `notificar-evento` desplegada en Supabase (correo vía Resend, pendiente de secret)
 - Tipos TypeScript completos del esquema (`lib/supabase/types.ts`)
+- Design system Figma aplicado: paleta violeta `#6B5CF6`, fondo lavanda `#F2F0F9`, tokens en `globals.css`
+- Verificación visual completa (login, admin, director, conductor, evento)
+
+### Fixes de compatibilidad aplicados (Next.js 16 + Windows)
+
+| Archivo | Cambio | Motivo |
+|---------|--------|--------|
+| `app/globals.css` | Tailwind v4 inlineado (sin `@import "tailwindcss"`) | webpack 5 corrompe rutas con `#` en Windows |
+| `next.config.ts` | `resolve.symlinks: false` | Evita que webpack resuelva junctions a ruta real |
+| `app/layout.tsx` | Eliminado `next/font/google` | Genera módulos CSS con queries incompatibles con `#` en ruta |
+| `app/favicon.ico` → `public/favicon.ico` | Movido | Los assets en `app/` se procesan como módulos webpack |
 
 ### Pendiente para cerrar Fase 3 → producción
 
@@ -86,3 +97,12 @@ Fase 4  ░░░░░░░░░░  PENDIENTE  — hoja de vida, mantenimien
 | Configurar Resend (`RESEND_API_KEY` + `CORREO_FLOTA_DESTINO` en Supabase Secrets) | Pendiente |
 | Desplegar frontend en Vercel | Pendiente |
 | Prueba end-to-end del flujo completo | Pendiente |
+
+### Fase 4 — Plan de implementación
+
+| # | Funcionalidad | Descripción |
+|---|---------------|-------------|
+| 1 | Hoja de vida del vehículo | Página `/vehiculos/[id]` con historial completo |
+| 2 | Mantenimientos preventivos | Tabla `mantenimientos`, alertas de vencimiento, CRUD |
+| 3 | Dashboards con gráficas | KPIs por región (Recharts), colores `#50AAFF` `#C8E63A` `#7B2FBE` |
+| 4 | Notificaciones email | Edge Function con Resend (bloqueado en `RESEND_API_KEY`) |
