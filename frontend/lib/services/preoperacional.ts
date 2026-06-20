@@ -38,7 +38,7 @@ export async function obtenerAsignacionVigente(usuarioId: string): Promise<Asign
     .is('hasta', null)
     .single()
   if (error) return null
-  return data as AsignacionConVehiculo
+  return data as unknown as AsignacionConVehiculo
 }
 
 export async function listarPreoperacionales(opts?: {
