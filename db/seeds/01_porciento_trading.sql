@@ -1,12 +1,8 @@
 -- ============================================================
 -- MyDrive — Seed 01: Porciento Trading (organización fundadora)
 -- ============================================================
--- INSTRUCCIONES ANTES DE CORRER:
---   1. En Supabase → Authentication → Users → "Add user"
---      Email: elvis.p.col@gmail.com  Password: (temporal)
---   2. Copia el UUID que Supabase genera
---   3. Reemplaza ELVIS_AUTH_UUID abajo con ese UUID
---   4. Corre en Supabase SQL Editor
+-- YA APLICADO el 2026-06-20 vía Management API.
+-- Auth UUID de Elvis: 1ddc0e2e-b31f-4488-bb19-334f1c62c0f3
 -- ============================================================
 
 DO $$
@@ -15,7 +11,7 @@ DECLARE
   v_region_id    uuid;
   v_usuario_id   uuid;
   v_plantilla_id uuid;
-  v_elvis_auth   uuid := 'ELVIS_AUTH_UUID'; -- ← REEMPLAZAR
+  v_elvis_auth   uuid := '1ddc0e2e-b31f-4488-bb19-334f1c62c0f3';
 BEGIN
 
   -- 1. Organización
