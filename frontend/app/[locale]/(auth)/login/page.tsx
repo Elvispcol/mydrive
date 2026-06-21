@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { isDev } from '@/lib/env'
+const isDev = process.env.NODE_ENV === 'development'
 
 export default function LoginPage() {
   const router = useRouter()
