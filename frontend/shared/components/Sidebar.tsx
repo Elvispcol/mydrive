@@ -10,21 +10,23 @@ type NavItem = { href: string; label: string; icon: React.ComponentType<{ classN
 function buildNav(locale: string): Record<'admin_apoyo' | 'director', NavItem[]> {
   return {
     admin_apoyo: [
-      { href: `/${locale}/admin`,                  label: 'Tablero',         icon: IconGrid },
-      { href: `/${locale}/admin/novedades`,        label: 'Novedades',       icon: IconAlert },
-      { href: `/${locale}/admin/tareas`,           label: 'Tareas',          icon: IconClipboard },
-      { href: `/${locale}/admin/vehiculos`,        label: 'Vehículos',       icon: IconTruck },
-      { href: `/${locale}/admin/conductores`,      label: 'Conductores',     icon: IconUser },
-      { href: `/${locale}/admin/mantenimientos`,   label: 'Mantenimientos',  icon: IconWrench },
+      { href: `/${locale}/admin`,                        label: 'Tablero',           icon: IconGrid },
+      { href: `/${locale}/admin/novedades`,              label: 'Novedades',         icon: IconAlert },
+      { href: `/${locale}/admin/preoperacionales`,       label: 'Preoperacionales',  icon: IconPreop },
+      { href: `/${locale}/admin/tareas`,                 label: 'Tareas',            icon: IconClipboard },
+      { href: `/${locale}/admin/vehiculos`,              label: 'Vehículos',         icon: IconTruck },
+      { href: `/${locale}/admin/conductores`,            label: 'Conductores',       icon: IconUser },
+      { href: `/${locale}/admin/mantenimientos`,         label: 'Mantenimientos',    icon: IconWrench },
     ],
     director: [
-      { href: `/${locale}/director`,                label: 'Resumen',         icon: IconGrid },
-      { href: `/${locale}/director/vehiculos`,      label: 'Vehículos',       icon: IconTruck },
-      { href: `/${locale}/director/conductores`,    label: 'Conductores',     icon: IconUser },
-      { href: `/${locale}/director/mantenimientos`, label: 'Mantenimientos',  icon: IconWrench },
-      { href: `/${locale}/director/novedades`,      label: 'Novedades',       icon: IconAlert },
-      { href: `/${locale}/director/usuarios`,       label: 'Usuarios',        icon: IconUsers },
-      { href: `/${locale}/director/regiones`,       label: 'Regiones',        icon: IconMap },
+      { href: `/${locale}/director`,                     label: 'Resumen',           icon: IconGrid },
+      { href: `/${locale}/director/vehiculos`,           label: 'Vehículos',         icon: IconTruck },
+      { href: `/${locale}/director/conductores`,         label: 'Conductores',       icon: IconUser },
+      { href: `/${locale}/director/mantenimientos`,      label: 'Mantenimientos',    icon: IconWrench },
+      { href: `/${locale}/director/novedades`,           label: 'Novedades',         icon: IconAlert },
+      { href: `/${locale}/director/preoperacionales`,    label: 'Preoperacionales',  icon: IconPreop },
+      { href: `/${locale}/director/usuarios`,            label: 'Usuarios',          icon: IconUsers },
+      { href: `/${locale}/director/regiones`,            label: 'Regiones',          icon: IconMap },
     ],
   }
 }
@@ -132,6 +134,13 @@ function IconUsers({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+    </svg>
+  )
+}
+function IconPreop({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
     </svg>
   )
 }
