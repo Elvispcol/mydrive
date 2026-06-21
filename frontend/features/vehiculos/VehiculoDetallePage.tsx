@@ -88,7 +88,17 @@ export async function VehiculoDetallePage({
           <PageHeader
             title={vehiculo.placa}
             subtitle={vehiculoSubtitle}
-            actions={<LogoutButton />}
+            actions={
+              <div className="flex items-center gap-2">
+                <Link
+                  href={`${backHref}/${vehiculo.id}/editar`}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-ink-700 border border-border rounded-lg hover:bg-surface-raised transition-colors"
+                >
+                  <IconEdit /> Editar
+                </Link>
+                <LogoutButton />
+              </div>
+            }
           />
 
           <VehiculoInfoCard vehiculo={vehiculo} locale={locale} />
@@ -201,6 +211,14 @@ export async function VehiculoDetallePage({
         </div>
       </main>
     </div>
+  )
+}
+
+function IconEdit() {
+  return (
+    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+    </svg>
   )
 }
 

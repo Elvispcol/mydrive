@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { PageHeader } from '@/shared/components/PageHeader'
 import { EmptyState } from '@/shared/components/ui/EmptyState'
@@ -18,7 +19,17 @@ export function ConductorListaPage({ conductores, basePath, actions }: Props) {
       <PageHeader
         title="Conductores"
         subtitle={`${conductores.length} conductor${conductores.length !== 1 ? 'es' : ''} activo${conductores.length !== 1 ? 's' : ''}${conAlerta > 0 ? ` · ${conAlerta} con alerta de licencia` : ''}`}
-        actions={actions}
+        actions={
+          <div className="flex items-center gap-3">
+            <Link
+              href={`${basePath}/nuevo`}
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-primary rounded-lg hover:bg-primary-hover transition-colors shadow-sm shadow-primary/20"
+            >
+              <IconPlus /> Nuevo conductor
+            </Link>
+            {actions}
+          </div>
+        }
       />
 
       {conductores.length === 0 ? (
@@ -45,5 +56,13 @@ export function ConductorListaPage({ conductores, basePath, actions }: Props) {
         </div>
       )}
     </>
+  )
+}
+
+function IconPlus() {
+  return (
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+    </svg>
   )
 }

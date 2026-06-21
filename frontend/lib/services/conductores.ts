@@ -14,6 +14,7 @@ export interface ConductorConVehiculo {
   licencia_vencimiento: string | null
   foto_url: string | null
   activo: boolean
+  fecha_ingreso: string | null
   region: { id: string; nombre: string } | null
   asignacion_activa: {
     id: string
@@ -31,6 +32,20 @@ export interface ConductorConVehiculo {
   dias_para_vencer_licencia: number | null
 }
 
+export interface ConductorInput {
+  nombre: string
+  email: string
+  documento: string | null
+  celular: string | null
+  ciudad: string | null
+  cargo: string | null
+  tipo_licencia: TipoLicencia | null
+  licencia_expedicion: string | null
+  licencia_vencimiento: string | null
+  fecha_ingreso: string | null
+  region_id: string | null
+}
+
 function diasParaVencer(fecha: string | null): number | null {
   if (!fecha) return null
   const diff = new Date(fecha).getTime() - Date.now()
@@ -45,7 +60,7 @@ export async function listarConductores(): Promise<ConductorConVehiculo[]> {
     .select(`
       id, nombre, email, documento, celular, ciudad, cargo,
       tipo_licencia, licencia_expedicion, licencia_vencimiento,
-      foto_url, activo,
+      foto_url, activo, fecha_ingreso,
       region:region_id ( id, nombre )
     `)
     .eq('rol', 'conductor')
@@ -54,7 +69,6 @@ export async function listarConductores(): Promise<ConductorConVehiculo[]> {
 
   if (!usuarios?.length) return []
 
-  // Asignaciones activas para todos los conductores
   const conductorIds = usuarios.map(u => u.id)
   const { data: asignaciones } = await supabase
     .from('asignacion')
@@ -87,7 +101,7 @@ export async function obtenerConductor(id: string): Promise<ConductorConVehiculo
     .select(`
       id, nombre, email, documento, celular, ciudad, cargo,
       tipo_licencia, licencia_expedicion, licencia_vencimiento,
-      foto_url, activo,
+      foto_url, activo, fecha_ingreso,
       region:region_id ( id, nombre )
     `)
     .eq('id', id)
@@ -114,11 +128,37 @@ export async function obtenerConductor(id: string): Promise<ConductorConVehiculo
   } as ConductorConVehiculo
 }
 
-// Conductores con licencia próxima a vencer (alertas para dashboard)
 export async function conductoresConAlerta(dias = 30): Promise<ConductorConVehiculo[]> {
   const todos = await listarConductores()
   return todos.filter(c => {
     if (c.dias_para_vencer_licencia === null) return false
     return c.dias_para_vencer_licencia <= dias
   }).sort((a, b) => (a.dias_para_vencer_licencia ?? 999) - (b.dias_para_vencer_licencia ?? 999))
+}
+
+export async function actualizarConductor(id: string, input: Partial<ConductorInput>): Promise<void> {
+  const supabase = await createClient()
+  const { error } = await supabase.from('usuario').update(input).eq('id', id)
+  if (error) throw new Error(error.message)
+}
+
+export async function retirarConductor(id: string, motivo: string, fecha: string): Promise<void> {
+  const supabase = await createClient()
+
+  await supabase
+    .from('asignacion')
+    .update({ hasta: new Date().toISOString(), motivo_fin: motivo })
+    .eq('usuario_id', id)
+    .is('hasta', null)
+
+  const { error } = await supabase
+    .from('usuario')
+    .update({
+      activo: false,
+      fecha_retiro: fecha,
+      motivo_retiro: motivo,
+    })
+    .eq('id', id)
+
+  if (error) throw new Error(error.message)
 }

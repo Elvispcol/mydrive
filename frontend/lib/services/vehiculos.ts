@@ -32,6 +32,21 @@ export interface ListarVehiculosOpts {
   limit?: number
 }
 
+export interface VehiculoInput {
+  placa: string
+  marca: string | null
+  linea: string | null
+  modelo_anio: number | null
+  tipo: string | null
+  color: string | null
+  cilindraje: number | null
+  numero_motor: string | null
+  numero_chasis: string | null
+  km_actual: number
+  region_id: string
+  estado: EstadoVehiculo
+}
+
 export async function listarVehiculos(opts: ListarVehiculosOpts = {}): Promise<Page<Vehiculo>> {
   const supabase = await createClient()
   const limit = opts.limit ?? 25
@@ -39,6 +54,7 @@ export async function listarVehiculos(opts: ListarVehiculosOpts = {}): Promise<P
   let query = supabase
     .from('vehiculo')
     .select('*', { count: 'exact' })
+    .is('eliminado_en', null)
     .order('placa', { ascending: true })
     .limit(limit + 1)
 
@@ -61,7 +77,10 @@ export async function listarVehiculos(opts: ListarVehiculosOpts = {}): Promise<P
 
 export async function contarVehiculos(estado?: EstadoVehiculo): Promise<number> {
   const supabase = await createClient()
-  let query = supabase.from('vehiculo').select('*', { count: 'exact', head: true })
+  let query = supabase
+    .from('vehiculo')
+    .select('*', { count: 'exact', head: true })
+    .is('eliminado_en', null)
   if (estado) query = query.eq('estado', estado)
   const { count, error } = await query
   if (error) throw new Error(`vehiculos.contar: ${error.message}`)
@@ -97,6 +116,51 @@ export async function obtenerVehiculo(id: string): Promise<VehiculoDetalle | nul
   }
 }
 
+export async function crearVehiculo(input: VehiculoInput): Promise<Vehiculo> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('vehiculo')
+    .insert({
+      placa: input.placa.toUpperCase().trim(),
+      marca: input.marca || null,
+      linea: input.linea || null,
+      modelo_anio: input.modelo_anio || null,
+      tipo: input.tipo || null,
+      color: input.color || null,
+      cilindraje: input.cilindraje || null,
+      numero_motor: input.numero_motor || null,
+      numero_chasis: input.numero_chasis || null,
+      km_actual: input.km_actual ?? 0,
+      region_id: input.region_id,
+      estado: input.estado,
+    })
+    .select()
+    .single()
+  if (error) throw new Error(error.message)
+  return data as Vehiculo
+}
+
+export async function actualizarVehiculo(id: string, input: Partial<VehiculoInput>): Promise<void> {
+  const supabase = await createClient()
+  const payload: Record<string, unknown> = { ...input }
+  if (input.placa) payload.placa = input.placa.toUpperCase().trim()
+  const { error } = await supabase.from('vehiculo').update(payload).eq('id', id)
+  if (error) throw new Error(error.message)
+}
+
+export async function retirarVehiculo(id: string, motivo: string): Promise<void> {
+  const supabase = await createClient()
+  const { error } = await supabase
+    .from('vehiculo')
+    .update({
+      estado: 'inactivo',
+      retiro_motivo: motivo,
+      retiro_fecha: new Date().toISOString().split('T')[0],
+    })
+    .eq('id', id)
+  if (error) throw new Error(error.message)
+}
+
 export async function historialVehiculo(vehiculoId: string): Promise<HistorialVehiculo> {
   const supabase = await createClient()
 
@@ -111,12 +175,14 @@ export async function historialVehiculo(vehiculoId: string): Promise<HistorialVe
       .from('novedad')
       .select('*')
       .eq('vehiculo_id', vehiculoId)
+      .is('eliminado_en', null)
       .order('creado_en', { ascending: false })
       .limit(20),
     supabase
       .from('mantenimiento')
       .select('*')
       .eq('vehiculo_id', vehiculoId)
+      .is('eliminado_en', null)
       .order('fecha', { ascending: false })
       .limit(20),
     supabase

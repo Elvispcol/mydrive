@@ -1,6 +1,5 @@
 // Tipos TypeScript derivados del esquema de base de datos de MyDrive.
-// Refleja las tablas definidas en db/migrations/.
-// Actualizar aquí si se agregan columnas en una nueva migración.
+// Refleja las tablas definidas en db/migrations/ (hasta migración 08).
 
 export type Rol = 'director' | 'admin_apoyo' | 'conductor'
 export type EstadoVehiculo = 'activo' | 'mantenimiento' | 'inactivo' | 'vendido'
@@ -12,12 +11,22 @@ export type EstadoEvento = 'reportado' | 'en_gestion' | 'cerrado'
 export type OrigenNovedad = 'preoperacional' | 'evento' | 'manual' | 'documento'
 export type EstadoMantenimientoPreventivo = 'pendiente' | 'completado' | 'vencido'
 export type TipoMantenimientoPreventivo = 'aceite' | 'frenos' | 'llantas' | 'filtros' | 'revision_general' | 'otro'
+export type EstadoMantenimiento = 'programado' | 'en_proceso' | 'completado' | 'cancelado'
+export type TipoCombustible = 'gasolina' | 'diesel' | 'gas_natural' | 'electrico' | 'hibrido'
+export type TipoProveedor = 'taller_mecanico' | 'electricista' | 'llantas' | 'carroceria' | 'combustible' | 'seguros' | 'otro'
+export type TipoTrabajo = 'mano_obra' | 'repuesto' | 'insumo' | 'revision' | 'otro'
+export type TipoInfraccion = 'velocidad' | 'senales' | 'estacionamiento' | 'documentos' | 'alcoholemia' | 'otro'
+export type EstadoMulta = 'pendiente' | 'en_disputa' | 'pagada' | 'exonerada' | 'vencida'
 
 export interface Organizacion {
   id: string
   nombre: string
   nit: string | null
   plan_licencia: string
+  pais_codigo: string | null
+  idioma: string | null
+  moneda: string | null
+  zona_horaria: string | null
   activo: boolean
   creado_en: string
 }
@@ -52,6 +61,12 @@ export interface Usuario {
   licencia_expedicion: string | null
   licencia_vencimiento: string | null
   activo: boolean
+  // Columnas de trazabilidad (migración 08)
+  creado_por: string | null
+  actualizado_por: string | null
+  fecha_ingreso: string | null
+  fecha_retiro: string | null
+  motivo_retiro: string | null
   creado_en: string
 }
 
@@ -65,6 +80,17 @@ export interface Vehiculo {
   modelo_anio: number | null
   tipo: string | null
   estado: EstadoVehiculo
+  // Columnas de trazabilidad (migración 08)
+  color: string | null
+  cilindraje: number | null
+  numero_motor: string | null
+  numero_chasis: string | null
+  km_actual: number | null
+  creado_por: string | null
+  actualizado_por: string | null
+  retiro_motivo: string | null
+  retiro_fecha: string | null
+  eliminado_en: string | null
   creado_en: string
 }
 
@@ -77,6 +103,7 @@ export interface Asignacion {
   desde: string
   hasta: string | null
   motivo_fin: string | null
+  creado_por: string | null
   creado_en: string
 }
 
@@ -156,6 +183,23 @@ export interface Novedad {
   descripcion: string | null
   prioridad: Prioridad
   estado: EstadoNovedad
+  // Columnas de trazabilidad (migración 08)
+  asignado_a: string | null
+  resuelto_por: string | null
+  resuelto_en: string | null
+  adjunto_url: string | null
+  eliminado_en: string | null
+  creado_en: string
+}
+
+export interface NovédadSeguimiento {
+  id: string
+  novedad_id: string
+  usuario_id: string
+  accion: string
+  descripcion: string | null
+  estado_nuevo: EstadoNovedad | null
+  adjunto_url: string | null
   creado_en: string
 }
 
@@ -184,6 +228,13 @@ export interface Mantenimiento {
   costo: number | null
   fecha: string
   proximo_en: string | null
+  // Columnas de trazabilidad (migración 08)
+  estado: EstadoMantenimiento
+  km_en_servicio: number | null
+  completado_en: string | null
+  completado_por: string | null
+  creado_por: string | null
+  eliminado_en: string | null
   creado_en: string
 }
 
@@ -203,8 +254,93 @@ export interface MantenimientoPreventivo {
   updated_at: string | null
 }
 
-// Tipo placeholder para el cliente Supabase tipado
-// Se puede reemplazar con los tipos generados por `supabase gen types typescript`
+export interface Combustible {
+  id: string
+  org_id: string
+  region_id: string
+  vehiculo_id: string
+  conductor_id: string
+  fecha: string
+  km_odometro: number
+  litros: number
+  costo_litro: number | null
+  costo_total: number | null
+  tipo_combustible: TipoCombustible
+  estacion: string | null
+  numero_factura: string | null
+  observaciones: string | null
+  creado_por: string | null
+  creado_en: string
+  updated_at: string | null
+}
+
+export interface TallerProveedor {
+  id: string
+  org_id: string
+  nombre: string
+  nit: string | null
+  tipo: TipoProveedor
+  telefono: string | null
+  email: string | null
+  direccion: string | null
+  ciudad: string | null
+  contacto_nombre: string | null
+  activo: boolean
+  creado_por: string | null
+  creado_en: string
+  updated_at: string | null
+}
+
+export interface MantenimientoItem {
+  id: string
+  mantenimiento_id: string
+  descripcion: string
+  tipo_trabajo: TipoTrabajo | null
+  cantidad: number | null
+  costo_unitario: number | null
+  costo_total: number | null
+  proveedor_id: string | null
+  numero_factura: string | null
+  observaciones: string | null
+  creado_en: string
+}
+
+export interface MultaInfraccion {
+  id: string
+  org_id: string
+  region_id: string
+  vehiculo_id: string
+  conductor_id: string | null
+  fecha_infraccion: string
+  fecha_notificacion: string | null
+  tipo: TipoInfraccion
+  descripcion: string | null
+  valor: number | null
+  descuento_pronto_pago: number | null
+  fecha_limite_pago: string | null
+  estado: EstadoMulta
+  pagado_por: string | null
+  fecha_pago: string | null
+  comprobante_url: string | null
+  observaciones: string | null
+  creado_por: string | null
+  creado_en: string
+  updated_at: string | null
+}
+
+export interface ContactoEmergencia {
+  id: string
+  usuario_id: string
+  nombre: string
+  parentesco: string | null
+  telefono: string
+  telefono_alt: string | null
+  email: string | null
+  es_principal: boolean
+  creado_en: string
+  updated_at: string | null
+}
+
 export type Database = {
   public: {
     Tables: {
@@ -223,12 +359,18 @@ export type Database = {
       mantenimiento: { Row: Mantenimiento; Insert: Partial<Mantenimiento>; Update: Partial<Mantenimiento> }
       mantenimiento_preventivo: { Row: MantenimientoPreventivo; Insert: Partial<MantenimientoPreventivo>; Update: Partial<MantenimientoPreventivo> }
       documento_vehiculo: { Row: DocumentoVehiculo; Insert: Partial<DocumentoVehiculo>; Update: Partial<DocumentoVehiculo> }
+      combustible: { Row: Combustible; Insert: Partial<Combustible>; Update: Partial<Combustible> }
+      taller_proveedor: { Row: TallerProveedor; Insert: Partial<TallerProveedor>; Update: Partial<TallerProveedor> }
+      mantenimiento_item: { Row: MantenimientoItem; Insert: Partial<MantenimientoItem>; Update: Partial<MantenimientoItem> }
+      multa_infraccion: { Row: MultaInfraccion; Insert: Partial<MultaInfraccion>; Update: Partial<MultaInfraccion> }
+      contacto_emergencia: { Row: ContactoEmergencia; Insert: Partial<ContactoEmergencia>; Update: Partial<ContactoEmergencia> }
     }
     Functions: {
       mydrive_org_id: { Args: Record<string, never>; Returns: string }
       mydrive_region_id: { Args: Record<string, never>; Returns: string }
       mydrive_rol: { Args: Record<string, never>; Returns: string }
       mydrive_es_nacional: { Args: Record<string, never>; Returns: boolean }
+      mydrive_es_superadmin: { Args: Record<string, never>; Returns: boolean }
     }
   }
 }

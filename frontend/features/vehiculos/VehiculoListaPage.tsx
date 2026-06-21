@@ -34,7 +34,17 @@ export async function VehiculoListaPage({ locale, rol, nombre, basePath }: Props
           <PageHeader
             title="Vehículos"
             subtitle={`${page.total} vehículo${page.total !== 1 ? 's' : ''} registrado${page.total !== 1 ? 's' : ''}`}
-            actions={<LogoutButton />}
+            actions={
+              <div className="flex items-center gap-3">
+                <Link
+                  href={`${basePath}/nuevo`}
+                  className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-primary rounded-lg hover:bg-primary-hover transition-colors shadow-sm shadow-primary/20"
+                >
+                  <IconPlus /> Nuevo vehículo
+                </Link>
+                <LogoutButton />
+              </div>
+            }
           />
 
           {page.items.length > 0 ? (
@@ -85,6 +95,14 @@ export async function VehiculoListaPage({ locale, rol, nombre, basePath }: Props
         </div>
       </main>
     </div>
+  )
+}
+
+function IconPlus() {
+  return (
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+    </svg>
   )
 }
 

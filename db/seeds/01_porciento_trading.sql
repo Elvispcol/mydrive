@@ -16,7 +16,7 @@ BEGIN
 
   -- 1. Organización
   INSERT INTO organizacion (nombre, nit, plan_licencia, pais_codigo, idioma, moneda, zona_horaria)
-  VALUES ('Porciento Trading', '900000000-0', 'enterprise', 'CO', 'es', 'COP', 'America/Bogota')
+  VALUES ('Porciento', '900000000-0', 'enterprise', 'CO', 'es', 'COP', 'America/Bogota')
   RETURNING id INTO v_org_id;
 
   -- 2. Región nacional
