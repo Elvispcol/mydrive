@@ -944,39 +944,57 @@
 }
 
 :root {
-  --canvas: #F2F0F9;
-  --surface: #FFFFFF;
-  --surface-raised: #F8F7FC;
+  /* ── Figma: Data table design components (Light theme) ── */
 
-  --border: #E8E6F0;
-  --border-strong: #D1CEEA;
+  /* Fondos */
+  --canvas: #F9F9FC;        /* app bg — Figma rgb(249,249,252) */
+  --surface: #FFFFFF;       /* cards, tabla, modales */
+  --surface-raised: #EEEEF2; /* header tabla, hover fila — Figma rgb(238,238,242) */
 
-  --ink-900: #1C1B2E;
-  --ink-700: #3C3A52;
-  --ink-500: #78778A;
-  --ink-300: #A5A4B5;
-  --ink-100: #E0DFED;
+  /* Bordes */
+  --border: #EEEEF2;        /* dividers suaves — Figma rgb(238,238,242) */
+  --border-strong: #BCBCC6; /* bordes fuertes — Figma rgb(188,188,198) */
 
-  --primary: #6B5CF6;
-  --primary-hover: #5B4CE6;
-  --primary-light: #B3A8F5;
-  --primary-pale: #EAE8FF;
+  /* Texto */
+  --ink-900: #242533;       /* título principal — Figma rgb(36,37,51) */
+  --ink-700: #484964;       /* texto secundario — Figma rgb(72,73,100) */
+  --ink-500: #808192;       /* muted — Figma rgb(128,129,146) */
+  --ink-300: #ABABBE;       /* placeholders — Figma rgb(171,172,190) */
+  --ink-100: #EEEEF2;       /* líneas muy sutiles */
 
+  /* Primario — azul-violeta vibrante del Figma */
+  --primary: #3927FF;       /* Figma rgb(57,39,255) */
+  --primary-hover: #644DED; /* activo sidebar — Figma rgb(100,77,237) */
+  --primary-light: #8B7EF8; /* intermedio */
+  --primary-pale: #EAE7F9;  /* chip/avatar bg — Figma rgb(234,231,249) */
+  --primary-tint: #E9E8FC;  /* row selected — Figma rgb(233,232,252) */
+
+  /* Estados */
   --success: #28D79A;
   --success-pale: #E5FBF3;
   --success-dark: #0E8F63;
 
   --warning: #F5A623;
-  --warning-pale: #FFF7E6;
+  --warning-pale: #FAF3E1;  /* Figma rgb(250,243,225) */
   --warning-dark: #A36308;
 
   --danger: #E5484D;
   --danger-pale: #FFEAEB;
   --danger-dark: #B52228;
 
+  /* Gráficas */
   --chart-blue: #50AAFF;
   --chart-lime: #C8E63A;
-  --chart-purple: #7B2FBE;
+  --chart-purple: #644DED;  /* acento Figma */
+
+  /* Tabla — tokens explícitos */
+  --table-header-bg: #EEEEF2;
+  --table-row-bg: #FFFFFF;
+  --table-row-hover: #F9F9FC;
+  --table-row-selected: #E9E8FC;
+  --table-border: #EEEEF2;
+  --table-row-height: 36px;
+  --table-header-height: 48px;
 }
 
 @theme inline {
@@ -1000,6 +1018,7 @@
   --color-primary-hover: var(--primary-hover);
   --color-primary-light: var(--primary-light);
   --color-primary-pale: var(--primary-pale);
+  --color-primary-tint: var(--primary-tint);
 
   --color-success: var(--success);
   --color-success-pale: var(--success-pale);
@@ -1016,6 +1035,12 @@
   --color-chart-blue: var(--chart-blue);
   --color-chart-lime: var(--chart-lime);
   --color-chart-purple: var(--chart-purple);
+
+  --color-table-header-bg: var(--table-header-bg);
+  --color-table-row-bg: var(--table-row-bg);
+  --color-table-row-hover: var(--table-row-hover);
+  --color-table-row-selected: var(--table-row-selected);
+  --color-table-border: var(--table-border);
 }
 
 body {
