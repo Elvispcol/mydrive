@@ -17,6 +17,9 @@ function buildNav(locale: string): Record<'admin_apoyo' | 'director', NavItem[]>
       { href: `/${locale}/admin/vehiculos`,              label: 'Vehículos',         icon: IconTruck },
       { href: `/${locale}/admin/conductores`,            label: 'Conductores',       icon: IconUser },
       { href: `/${locale}/admin/mantenimientos`,         label: 'Mantenimientos',    icon: IconWrench },
+      { href: `/${locale}/admin/combustible`,            label: 'Combustible',       icon: IconFuel },
+      { href: `/${locale}/admin/multas`,                 label: 'Multas',            icon: IconWarning },
+      { href: `/${locale}/admin/checklist`,              label: 'Plantillas',        icon: IconList },
     ],
     director: [
       { href: `/${locale}/director`,                     label: 'Resumen',           icon: IconGrid },
@@ -24,6 +27,10 @@ function buildNav(locale: string): Record<'admin_apoyo' | 'director', NavItem[]>
       { href: `/${locale}/director/conductores`,         label: 'Conductores',       icon: IconUser },
       { href: `/${locale}/director/mantenimientos`,      label: 'Mantenimientos',    icon: IconWrench },
       { href: `/${locale}/director/novedades`,           label: 'Novedades',         icon: IconAlert },
+      { href: `/${locale}/director/tareas`,              label: 'Tareas',            icon: IconClipboard },
+      { href: `/${locale}/director/combustible`,         label: 'Combustible',       icon: IconFuel },
+      { href: `/${locale}/director/multas`,              label: 'Multas',            icon: IconWarning },
+      { href: `/${locale}/director/checklist`,           label: 'Plantillas',        icon: IconList },
       { href: `/${locale}/director/preoperacionales`,    label: 'Preoperacionales',  icon: IconPreop },
       { href: `/${locale}/director/usuarios`,            label: 'Usuarios',          icon: IconUsers },
       { href: `/${locale}/director/regiones`,            label: 'Regiones',          icon: IconMap },
@@ -148,6 +155,27 @@ function IconMap({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+    </svg>
+  )
+}
+function IconFuel({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 4h10v16H3V4zM13 7h2l3 3v7a1 1 0 01-1 1h-1M7 4v4m4-4v4" />
+    </svg>
+  )
+}
+function IconWarning({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+    </svg>
+  )
+}
+function IconList({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 12h6M9 16h4" />
     </svg>
   )
 }

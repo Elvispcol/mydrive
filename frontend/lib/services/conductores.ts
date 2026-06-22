@@ -1,6 +1,17 @@
 import { createClient } from '@/lib/supabase/server'
 import type { TipoAsignacion, TipoLicencia } from '@/lib/supabase/types'
 
+export async function listarConductoresSimple(): Promise<{ id: string; nombre: string }[]> {
+  const supabase = await createClient()
+  const { data } = await supabase
+    .from('usuario')
+    .select('id, nombre')
+    .eq('rol', 'conductor')
+    .eq('activo', true)
+    .order('nombre')
+  return (data ?? []) as { id: string; nombre: string }[]
+}
+
 export interface ConductorConVehiculo {
   id: string
   nombre: string

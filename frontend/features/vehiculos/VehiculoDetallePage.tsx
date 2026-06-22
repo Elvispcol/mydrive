@@ -3,6 +3,7 @@ import Link from 'next/link'
 import type { Locale } from '@/lib/i18n/config'
 import type { Rol } from '@/lib/supabase/types'
 import { obtenerVehiculo, historialVehiculo } from '@/lib/services/vehiculos'
+import { estadoExpiracion } from '@/lib/services/documentos'
 import { Sidebar } from '@/shared/components/Sidebar'
 import { LogoutButton } from '@/shared/components/LogoutButton'
 import { PageHeader } from '@/shared/components/PageHeader'
@@ -11,16 +12,18 @@ import { EmptyState } from '@/shared/components/ui/EmptyState'
 import { VehiculoInfoCard } from './components/VehiculoInfoCard'
 import { PreoperacionalRow } from './components/PreoperacionalRow'
 import { MantenimientoRow } from './components/MantenimientoRow'
+import { DocumentoRow } from './components/DocumentoRow'
 import { NovedadCard } from '@/features/novedades/components/NovedadCard'
 import { formatDate } from '@/shared/utils/formatters'
 
-const TABS = ['preoperacionales', 'novedades', 'mantenimientos'] as const
+const TABS = ['preoperacionales', 'novedades', 'mantenimientos', 'documentos'] as const
 type Tab = (typeof TABS)[number]
 
 const TAB_LABELS: Record<Tab, string> = {
   preoperacionales: 'Preoperacionales',
   novedades:        'Novedades',
   mantenimientos:   'Mantenimientos',
+  documentos:       'Documentos',
 }
 
 interface Props {
@@ -208,10 +211,78 @@ export async function VehiculoDetallePage({
             </section>
           )}
 
+          {/* Tab: Documentos */}
+          {currentTab === 'documentos' && (
+            <section>
+              {/* Alertas de vencimiento al tope */}
+              {(() => {
+                const vencidos = historial.documentos.filter(d => estadoExpiracion(d.vence_en) === 'vencido')
+                const proximos = historial.documentos.filter(d => estadoExpiracion(d.vence_en) === 'proximo')
+                return (
+                  <>
+                    {vencidos.length > 0 && (
+                      <div className="mb-4 px-4 py-3 bg-danger-pale border border-danger/30 rounded-lg flex items-start gap-2.5">
+                        <IconAlertCircle className="w-4 h-4 text-danger-dark mt-0.5 flex-shrink-0" />
+                        <p className="text-sm text-danger-dark">
+                          <span className="font-semibold">{vencidos.length} documento{vencidos.length > 1 ? 's vencidos' : ' vencido'}:</span>{' '}
+                          {vencidos.map(d => TIPO_LABELS_ALERTA[d.tipo]).join(', ')}.
+                          Actualiza estos documentos lo antes posible.
+                        </p>
+                      </div>
+                    )}
+                    {proximos.length > 0 && (
+                      <div className="mb-4 px-4 py-3 bg-warning-pale border border-warning/30 rounded-lg flex items-start gap-2.5">
+                        <IconAlertCircle className="w-4 h-4 text-warning-dark mt-0.5 flex-shrink-0" />
+                        <p className="text-sm text-warning-dark">
+                          <span className="font-semibold">{proximos.length} documento{proximos.length > 1 ? 's próximos a vencer' : ' próximo a vencer'}:</span>{' '}
+                          {proximos.map(d => TIPO_LABELS_ALERTA[d.tipo]).join(', ')}.
+                        </p>
+                      </div>
+                    )}
+                  </>
+                )
+              })()}
+
+              <div className="flex justify-end mb-4">
+                <Link
+                  href={`${backHref}/${vehiculo.id}/documentos/nuevo`}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white bg-primary rounded-lg hover:bg-primary-hover transition-colors shadow-sm shadow-primary/20"
+                >
+                  <IconPlus /> Agregar documento
+                </Link>
+              </div>
+
+              {historial.documentos.length > 0 ? (
+                <div className="bg-surface rounded-xl border border-border overflow-hidden">
+                  <div className="divide-y divide-border">
+                    {historial.documentos.map((d) => (
+                      <DocumentoRow
+                        key={d.id}
+                        documento={d}
+                        editHref={`${backHref}/${vehiculo.id}/documentos/${d.id}/editar`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <EmptyState label="Sin documentos registrados para este vehículo. Agrega el SOAT, tecno-mecánica o pólizas." />
+              )}
+            </section>
+          )}
+
         </div>
       </main>
     </div>
   )
+}
+
+const TIPO_LABELS_ALERTA: Record<string, string> = {
+  soat:               'SOAT',
+  tecnomecanica:      'Tecno-mecánica',
+  poliza_rc:          'Póliza RC',
+  poliza_todo_riesgo: 'Póliza Todo Riesgo',
+  tarjeta_operacion:  'Tarjeta de Operación',
+  otro:               'Otro',
 }
 
 function IconEdit() {
@@ -255,6 +326,20 @@ function IconCalendar() {
   return (
     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+    </svg>
+  )
+}
+function IconAlertCircle({ className }: { className?: string }) {
+  return (
+    <svg className={className ?? 'w-4 h-4'} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  )
+}
+function IconPlus() {
+  return (
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
     </svg>
   )
 }

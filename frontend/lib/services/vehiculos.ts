@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import type {
   Vehiculo, EstadoVehiculo,
-  Novedad, Mantenimiento, MantenimientoPreventivo, Preoperacional,
+  Novedad, Mantenimiento, MantenimientoPreventivo, Preoperacional, DocumentoVehiculo,
 } from '@/lib/supabase/types'
 import type { Page } from './novedades'
 
@@ -23,6 +23,7 @@ export interface HistorialVehiculo {
   novedades: Novedad[]
   mantenimientos: Mantenimiento[]
   mantenimientos_preventivos: MantenimientoPreventivo[]
+  documentos: DocumentoVehiculo[]
 }
 
 export interface ListarVehiculosOpts {
@@ -164,7 +165,7 @@ export async function retirarVehiculo(id: string, motivo: string): Promise<void>
 export async function historialVehiculo(vehiculoId: string): Promise<HistorialVehiculo> {
   const supabase = await createClient()
 
-  const [preopsRes, novedadesRes, mantRes, mantPrevRes] = await Promise.all([
+  const [preopsRes, novedadesRes, mantRes, mantPrevRes, docsRes] = await Promise.all([
     supabase
       .from('preoperacional')
       .select('*, conductor:usuario_id(nombre)')
@@ -191,6 +192,11 @@ export async function historialVehiculo(vehiculoId: string): Promise<HistorialVe
       .eq('vehiculo_id', vehiculoId)
       .order('fecha_programada', { ascending: false })
       .limit(20),
+    supabase
+      .from('documento_vehiculo')
+      .select('*')
+      .eq('vehiculo_id', vehiculoId)
+      .order('vence_en', { ascending: true }),
   ])
 
   return {
@@ -198,5 +204,6 @@ export async function historialVehiculo(vehiculoId: string): Promise<HistorialVe
     novedades: (novedadesRes.data ?? []) as Novedad[],
     mantenimientos: (mantRes.data ?? []) as Mantenimiento[],
     mantenimientos_preventivos: (mantPrevRes.data ?? []) as MantenimientoPreventivo[],
+    documentos: (docsRes.data ?? []) as DocumentoVehiculo[],
   }
 }
