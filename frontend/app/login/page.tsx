@@ -112,10 +112,6 @@ export default function LoginPage() {
               <span className="text-warning-dark/70">Juan Pérez · Conductor</span>
               <span className="font-mono">conductor@mydrive.demo</span>
             </div>
-            <div className="flex justify-between gap-2">
-              <span className="text-warning-dark/70">Elvis · Superadmin</span>
-              <span className="font-mono">elvis.p.col@gmail.com</span>
-            </div>
           </div>
           <p className="mt-2 pt-2 border-t border-warning/20">
             Contraseña (demo): <span className="font-mono font-semibold">Demo1234!</span>
