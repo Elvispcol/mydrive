@@ -46,15 +46,20 @@ export function Sidebar({ rol, nombre }: { rol: Rol; nombre: string }) {
   const initial = nombre.charAt(0).toUpperCase()
 
   return (
-    <aside className="w-16 bg-canvas border-r border-border flex flex-col items-center shrink-0 h-screen sticky top-0 py-3 gap-1">
+    <aside className="w-52 bg-canvas border-r border-border flex flex-col shrink-0 h-screen sticky top-0">
 
-      {/* Avatar de empresa */}
-      <div className="w-9 h-9 rounded-xl bg-primary-pale flex items-center justify-center mb-3 shrink-0">
-        <span className="text-sm font-bold text-primary-hover">{initial}</span>
+      {/* Logo */}
+      <div className="px-4 py-4 border-b border-border">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center shrink-0">
+            <IconTruck className="w-4 h-4 text-white" />
+          </div>
+          <span className="font-bold text-ink-900 tracking-tight text-sm">MyDrive</span>
+        </div>
       </div>
 
       {/* Navegación */}
-      <nav className="flex-1 flex flex-col items-center gap-0.5 w-full px-2">
+      <nav className="flex-1 px-2 py-3 space-y-0.5 overflow-y-auto">
         {nav.map(item => {
           const active = pathname === item.href || pathname.startsWith(item.href + '/')
           const Icon = item.icon
@@ -62,34 +67,31 @@ export function Sidebar({ rol, nombre }: { rol: Rol; nombre: string }) {
             <Link
               key={item.href}
               href={item.href}
-              title={item.label}
-              className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors group relative ${
+              className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors group ${
                 active
-                  ? 'bg-primary-tint'
-                  : 'hover:bg-surface-raised'
+                  ? 'bg-primary-tint text-primary-hover'
+                  : 'text-ink-500 hover:bg-surface-raised hover:text-ink-900'
               }`}
             >
-              <Icon className={`w-[18px] h-[18px] shrink-0 transition-colors ${
+              <Icon className={`w-4 h-4 shrink-0 transition-colors ${
                 active ? 'text-primary-hover' : 'text-ink-300 group-hover:text-ink-700'
               }`} />
+              {item.label}
             </Link>
           )
         })}
       </nav>
 
-      {/* Settings + Avatar usuario */}
-      <div className="flex flex-col items-center gap-2 mt-auto">
-        <button
-          title="Configuración"
-          className="w-10 h-10 rounded-xl flex items-center justify-center hover:bg-surface-raised transition-colors"
-        >
-          <IconSettings className="w-[18px] h-[18px] text-ink-300 hover:text-ink-700" />
-        </button>
-        <div
-          title={nombre}
-          className="w-9 h-9 rounded-full bg-primary-pale flex items-center justify-center shrink-0"
-        >
-          <span className="text-xs font-bold text-primary-hover">{initial}</span>
+      {/* Usuario */}
+      <div className="px-3 py-3 border-t border-border">
+        <div className="flex items-center gap-2.5 px-2">
+          <div className="w-7 h-7 rounded-full bg-primary-pale flex items-center justify-center shrink-0">
+            <span className="text-xs font-bold text-primary-hover">{initial}</span>
+          </div>
+          <div className="min-w-0">
+            <p className="text-xs font-semibold text-ink-900 truncate">{nombre}</p>
+            <p className="text-[10px] text-ink-300 capitalize">{rol.replace('_', ' ')}</p>
+          </div>
         </div>
       </div>
     </aside>
