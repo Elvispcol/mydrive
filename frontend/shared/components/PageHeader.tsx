@@ -12,15 +12,18 @@ export function PageHeader({
   actions?: ReactNode
 }) {
   return (
-    <div className="flex items-start justify-between mb-8 gap-4">
-      <div>
-        {badge && (
-          <span className="text-xs font-semibold text-primary bg-primary-pale px-2.5 py-1 rounded-full inline-block mb-3">
-            {badge}
-          </span>
-        )}
-        <h1 className="text-xl font-bold text-ink-900 tracking-tight">{title}</h1>
-        {subtitle && <p className="text-sm text-ink-500 mt-0.5">{subtitle}</p>}
+    <div className="flex items-center justify-between mb-6 gap-4 pb-4 border-b border-border">
+      <div className="flex items-center gap-3 min-w-0">
+        <div className="min-w-0">
+          {subtitle && (
+            <p className="text-xs text-ink-300 mb-0.5 flex items-center gap-1.5">
+              {badge && <span className="text-primary-hover font-medium">{badge}</span>}
+              {badge && subtitle && <span>/</span>}
+              <span>{subtitle}</span>
+            </p>
+          )}
+          <h1 className="text-base font-semibold text-ink-900 tracking-tight truncate">{title}</h1>
+        </div>
       </div>
       {actions && <div className="flex items-center gap-2 shrink-0">{actions}</div>}
     </div>

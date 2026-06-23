@@ -10,30 +10,30 @@ type NavItem = { href: string; label: string; icon: React.ComponentType<{ classN
 function buildNav(locale: string): Record<'admin_apoyo' | 'director', NavItem[]> {
   return {
     admin_apoyo: [
-      { href: `/${locale}/admin`,                        label: 'Tablero',           icon: IconGrid },
-      { href: `/${locale}/admin/novedades`,              label: 'Novedades',         icon: IconAlert },
-      { href: `/${locale}/admin/preoperacionales`,       label: 'Preoperacionales',  icon: IconPreop },
-      { href: `/${locale}/admin/tareas`,                 label: 'Tareas',            icon: IconClipboard },
-      { href: `/${locale}/admin/vehiculos`,              label: 'Vehículos',         icon: IconTruck },
-      { href: `/${locale}/admin/conductores`,            label: 'Conductores',       icon: IconUser },
-      { href: `/${locale}/admin/mantenimientos`,         label: 'Mantenimientos',    icon: IconWrench },
-      { href: `/${locale}/admin/combustible`,            label: 'Combustible',       icon: IconFuel },
-      { href: `/${locale}/admin/multas`,                 label: 'Multas',            icon: IconWarning },
-      { href: `/${locale}/admin/checklist`,              label: 'Plantillas',        icon: IconList },
+      { href: `/${locale}/admin`,                  label: 'Tablero',          icon: IconGrid },
+      { href: `/${locale}/admin/novedades`,         label: 'Novedades',        icon: IconAlert },
+      { href: `/${locale}/admin/tareas`,            label: 'Tareas',           icon: IconClipboard },
+      { href: `/${locale}/admin/vehiculos`,         label: 'Vehículos',        icon: IconTruck },
+      { href: `/${locale}/admin/conductores`,       label: 'Conductores',      icon: IconUser },
+      { href: `/${locale}/admin/mantenimientos`,    label: 'Mantenimientos',   icon: IconWrench },
+      { href: `/${locale}/admin/combustible`,       label: 'Combustible',      icon: IconFuel },
+      { href: `/${locale}/admin/multas`,            label: 'Multas',           icon: IconWarning },
+      { href: `/${locale}/admin/checklist`,         label: 'Plantillas',       icon: IconList },
+      { href: `/${locale}/admin/preoperacionales`,  label: 'Preoperacionales', icon: IconPreop },
     ],
     director: [
-      { href: `/${locale}/director`,                     label: 'Resumen',           icon: IconGrid },
-      { href: `/${locale}/director/vehiculos`,           label: 'Vehículos',         icon: IconTruck },
-      { href: `/${locale}/director/conductores`,         label: 'Conductores',       icon: IconUser },
-      { href: `/${locale}/director/mantenimientos`,      label: 'Mantenimientos',    icon: IconWrench },
-      { href: `/${locale}/director/novedades`,           label: 'Novedades',         icon: IconAlert },
-      { href: `/${locale}/director/tareas`,              label: 'Tareas',            icon: IconClipboard },
-      { href: `/${locale}/director/combustible`,         label: 'Combustible',       icon: IconFuel },
-      { href: `/${locale}/director/multas`,              label: 'Multas',            icon: IconWarning },
-      { href: `/${locale}/director/checklist`,           label: 'Plantillas',        icon: IconList },
-      { href: `/${locale}/director/preoperacionales`,    label: 'Preoperacionales',  icon: IconPreop },
-      { href: `/${locale}/director/usuarios`,            label: 'Usuarios',          icon: IconUsers },
-      { href: `/${locale}/director/regiones`,            label: 'Regiones',          icon: IconMap },
+      { href: `/${locale}/director`,                    label: 'Resumen',          icon: IconGrid },
+      { href: `/${locale}/director/vehiculos`,          label: 'Vehículos',        icon: IconTruck },
+      { href: `/${locale}/director/conductores`,        label: 'Conductores',      icon: IconUser },
+      { href: `/${locale}/director/mantenimientos`,     label: 'Mantenimientos',   icon: IconWrench },
+      { href: `/${locale}/director/novedades`,          label: 'Novedades',        icon: IconAlert },
+      { href: `/${locale}/director/tareas`,             label: 'Tareas',           icon: IconClipboard },
+      { href: `/${locale}/director/combustible`,        label: 'Combustible',      icon: IconFuel },
+      { href: `/${locale}/director/multas`,             label: 'Multas',           icon: IconWarning },
+      { href: `/${locale}/director/checklist`,          label: 'Plantillas',       icon: IconList },
+      { href: `/${locale}/director/preoperacionales`,   label: 'Preoperacionales', icon: IconPreop },
+      { href: `/${locale}/director/usuarios`,           label: 'Usuarios',         icon: IconUsers },
+      { href: `/${locale}/director/regiones`,           label: 'Regiones',         icon: IconMap },
     ],
   }
 }
@@ -43,19 +43,18 @@ export function Sidebar({ rol, nombre }: { rol: Rol; nombre: string }) {
   const locale = pathname.split('/')[1] || defaultLocale
   const navMap = buildNav(locale)
   const nav = rol === 'director' ? navMap.director : navMap.admin_apoyo
+  const initial = nombre.charAt(0).toUpperCase()
 
   return (
-    <aside className="w-56 bg-surface border-r border-border flex flex-col shrink-0 h-screen sticky top-0">
-      <div className="px-5 py-5 border-b border-border">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shrink-0">
-            <IconTruck className="w-4 h-4 text-white" />
-          </div>
-          <span className="font-bold text-ink-900 tracking-tight">MyDrive</span>
-        </div>
+    <aside className="w-16 bg-canvas border-r border-border flex flex-col items-center shrink-0 h-screen sticky top-0 py-3 gap-1">
+
+      {/* Avatar de empresa */}
+      <div className="w-9 h-9 rounded-xl bg-primary-pale flex items-center justify-center mb-3 shrink-0">
+        <span className="text-sm font-bold text-primary-hover">{initial}</span>
       </div>
 
-      <nav className="flex-1 px-3 py-4 space-y-0.5">
+      {/* Navegación */}
+      <nav className="flex-1 flex flex-col items-center gap-0.5 w-full px-2">
         {nav.map(item => {
           const active = pathname === item.href || pathname.startsWith(item.href + '/')
           const Icon = item.icon
@@ -63,28 +62,34 @@ export function Sidebar({ rol, nombre }: { rol: Rol; nombre: string }) {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              title={item.label}
+              className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors group relative ${
                 active
-                  ? 'bg-primary-pale text-primary'
-                  : 'text-ink-500 hover:bg-surface-raised hover:text-ink-900'
+                  ? 'bg-primary-tint'
+                  : 'hover:bg-surface-raised'
               }`}
             >
-              <Icon className={`w-4 h-4 shrink-0 ${active ? 'text-primary' : 'text-ink-300'}`} />
-              {item.label}
+              <Icon className={`w-[18px] h-[18px] shrink-0 transition-colors ${
+                active ? 'text-primary-hover' : 'text-ink-300 group-hover:text-ink-700'
+              }`} />
             </Link>
           )
         })}
       </nav>
 
-      <div className="px-4 py-4 border-t border-border">
-        <div className="flex items-center gap-2.5">
-          <div className="w-6 h-6 rounded-full bg-primary-pale flex items-center justify-center shrink-0">
-            <span className="text-xs font-semibold text-primary">{nombre.charAt(0).toUpperCase()}</span>
-          </div>
-          <div className="min-w-0">
-            <p className="text-xs font-semibold text-ink-900 truncate">{nombre}</p>
-            <p className="text-xs text-ink-300 capitalize">{rol.replace('_', ' ')}</p>
-          </div>
+      {/* Settings + Avatar usuario */}
+      <div className="flex flex-col items-center gap-2 mt-auto">
+        <button
+          title="Configuración"
+          className="w-10 h-10 rounded-xl flex items-center justify-center hover:bg-surface-raised transition-colors"
+        >
+          <IconSettings className="w-[18px] h-[18px] text-ink-300 hover:text-ink-700" />
+        </button>
+        <div
+          title={nombre}
+          className="w-9 h-9 rounded-full bg-primary-pale flex items-center justify-center shrink-0"
+        >
+          <span className="text-xs font-bold text-primary-hover">{initial}</span>
         </div>
       </div>
     </aside>
@@ -94,10 +99,8 @@ export function Sidebar({ rol, nombre }: { rol: Rol; nombre: string }) {
 function IconGrid({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-      <rect x="3" y="3" width="7" height="7" rx="1" />
-      <rect x="14" y="3" width="7" height="7" rx="1" />
-      <rect x="3" y="14" width="7" height="7" rx="1" />
-      <rect x="14" y="14" width="7" height="7" rx="1" />
+      <rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" />
+      <rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" />
     </svg>
   )
 }
@@ -147,7 +150,7 @@ function IconUsers({ className }: { className?: string }) {
 function IconPreop({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
   )
 }
@@ -176,6 +179,14 @@ function IconList({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 12h6M9 16h4" />
+    </svg>
+  )
+}
+function IconSettings({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
     </svg>
   )
 }
