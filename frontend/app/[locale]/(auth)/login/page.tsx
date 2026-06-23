@@ -100,11 +100,28 @@ export default function LoginPage() {
 
         {isDev && (
           <div className="mt-4 bg-warning-pale border border-warning/20 rounded-xl p-4 text-xs text-warning-dark">
-            <p className="font-semibold mb-2">Cuentas de demo:</p>
-            <p>Director: <span className="font-mono">director@mydrive.demo</span></p>
-            <p>Admin: <span className="font-mono">admin@mydrive.demo</span></p>
-            <p>Conductor: <span className="font-mono">conductor@mydrive.demo</span></p>
-            <p className="mt-1">Contraseña: <span className="font-mono">Demo1234!</span></p>
+            <p className="font-semibold mb-2">Cuentas de demo — Empresa PM:</p>
+            <div className="space-y-1.5 mt-1">
+              <div className="flex justify-between gap-2">
+                <span className="text-warning-dark/70">Rosa · Directora</span>
+                <span className="font-mono">director@mydrive.demo</span>
+              </div>
+              <div className="flex justify-between gap-2">
+                <span className="text-warning-dark/70">Alexander · Admin</span>
+                <span className="font-mono">admin@mydrive.demo</span>
+              </div>
+              <div className="flex justify-between gap-2">
+                <span className="text-warning-dark/70">Juan Pérez · Conductor</span>
+                <span className="font-mono">conductor@mydrive.demo</span>
+              </div>
+              <div className="flex justify-between gap-2">
+                <span className="text-warning-dark/70">Elvis · Superadmin</span>
+                <span className="font-mono">elvis.p.col@gmail.com</span>
+              </div>
+            </div>
+            <p className="mt-2 pt-2 border-t border-warning/20">
+              Contraseña (demo): <span className="font-mono font-semibold">Demo1234!</span>
+            </p>
           </div>
         )}
       </div>
