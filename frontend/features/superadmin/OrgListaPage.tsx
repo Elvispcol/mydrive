@@ -40,7 +40,7 @@ export function OrgListaPage({ orgs, nombre }: Props) {
           <div className="bg-surface rounded-xl border border-border overflow-hidden">
             <div className="grid grid-cols-[2fr_1.2fr_1fr_1fr_auto] gap-4 px-6 py-3 bg-surface-raised border-b border-border">
               {['Organización', 'NIT', 'Plan', 'Estado', 'Acción'].map(h => (
-                <span key={h} className="text-xs font-semibold text-ink-400 uppercase tracking-wider">{h}</span>
+                <span key={h} className="text-[11px] font-medium text-ink-500">{h}</span>
               ))}
             </div>
             <div className="divide-y divide-border">

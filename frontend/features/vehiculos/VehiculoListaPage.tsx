@@ -6,7 +6,8 @@ import { Sidebar } from '@/shared/components/Sidebar'
 import { LogoutButton } from '@/shared/components/LogoutButton'
 import { PageHeader } from '@/shared/components/PageHeader'
 import { EmptyState } from '@/shared/components/ui/EmptyState'
-import { Badge, ESTADO_VEHICULO_VARIANT } from '@/shared/components/ui/Badge'
+import { StatusDot, ESTADO_VEHICULO_VARIANT } from '@/shared/components/ui/Badge'
+import { SearchBar } from '@/shared/components/ui/SearchBar'
 
 const ESTADO_LABEL: Record<string, string> = {
   activo:        'Activo',
@@ -20,10 +21,19 @@ interface Props {
   rol: Rol
   nombre: string
   basePath: string
+  q?: string
 }
 
-export async function VehiculoListaPage({ locale, rol, nombre, basePath }: Props) {
+export async function VehiculoListaPage({ locale, rol, nombre, basePath, q }: Props) {
   const page = await listarVehiculos({ limit: 50 })
+
+  const items = q
+    ? page.items.filter(v =>
+        v.placa.toLowerCase().includes(q.toLowerCase()) ||
+        (v.marca ?? '').toLowerCase().includes(q.toLowerCase()) ||
+        (v.linea ?? '').toLowerCase().includes(q.toLowerCase())
+      )
+    : page.items
 
   return (
     <div className="flex h-full">
@@ -49,69 +59,70 @@ export async function VehiculoListaPage({ locale, rol, nombre, basePath }: Props
           />
 
           {page.items.length > 0 ? (
-            <div className="bg-surface rounded-xl border border-border overflow-hidden">
+            <div className="bg-surface rounded-xl border border-border overflow-hidden shadow-sm">
+              <div className="px-4 py-2.5 border-b border-border">
+                <SearchBar placeholder="Buscar por placa, marca o modelo…" defaultValue={q} />
+              </div>
               <table className="w-full text-sm border-collapse">
                 <thead>
                   <tr className="bg-surface-raised border-b border-border">
-                    <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider w-32">
-                      Placa
-                    </th>
-                    <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider">
-                      Marca / Modelo
-                    </th>
-                    <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider w-20">
-                      Año
-                    </th>
-                    <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider w-28">
-                      Tipo
-                    </th>
-                    <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider w-36">
-                      Estado
-                    </th>
-                    <th className="h-12 w-10" />
+                    <th className="h-9 px-4 text-left w-28">Placa</th>
+                    <th className="h-9 px-4 text-left">Marca / Modelo</th>
+                    <th className="h-9 px-4 text-left w-16">Año</th>
+                    <th className="h-9 px-4 text-left w-24">Tipo</th>
+                    <th className="h-9 px-4 text-left w-32">Estado</th>
+                    <th className="h-9 w-10" />
                   </tr>
                 </thead>
                 <tbody>
-                  {page.items.map((v) => {
-                    const makeModel = [v.marca, v.linea].filter(Boolean).join(' ')
-                    return (
-                      <tr
-                        key={v.id}
-                        className="border-b border-border last:border-0 hover:bg-table-row-hover transition-colors group"
-                      >
-                        <td className="h-9 px-4">
-                          <Link
-                            href={`${basePath}/${v.id}`}
-                            className="font-mono font-semibold text-xs text-ink-900 group-hover:text-primary transition-colors"
-                          >
-                            {v.placa}
-                          </Link>
-                        </td>
-                        <td className="h-9 px-4 text-xs text-ink-700">
-                          {makeModel || <span className="text-ink-300">—</span>}
-                        </td>
-                        <td className="h-9 px-4 text-xs text-ink-500">
-                          {v.modelo_anio ?? <span className="text-ink-300">—</span>}
-                        </td>
-                        <td className="h-9 px-4 text-xs text-ink-500 capitalize">
-                          {v.tipo ?? <span className="text-ink-300">—</span>}
-                        </td>
-                        <td className="h-9 px-4">
-                          <Badge variant={ESTADO_VEHICULO_VARIANT[v.estado] ?? 'muted'}>
-                            {ESTADO_LABEL[v.estado] ?? v.estado}
-                          </Badge>
-                        </td>
-                        <td className="h-9 px-2">
-                          <Link
-                            href={`${basePath}/${v.id}`}
-                            className="flex items-center justify-center w-6 h-6 rounded text-ink-300 hover:text-ink-700 hover:bg-surface-raised transition-colors opacity-0 group-hover:opacity-100"
-                          >
-                            <IconChevronRight />
-                          </Link>
-                        </td>
-                      </tr>
-                    )
-                  })}
+                  {items.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="px-4 py-8 text-center text-xs text-ink-400">
+                        Sin resultados para &ldquo;{q}&rdquo;
+                      </td>
+                    </tr>
+                  ) : (
+                    items.map((v) => {
+                      const makeModel = [v.marca, v.linea].filter(Boolean).join(' ')
+                      return (
+                        <tr
+                          key={v.id}
+                          className="border-b border-border last:border-0 hover:bg-table-row-hover transition-colors group"
+                        >
+                          <td className="h-9 px-4">
+                            <Link
+                              href={`${basePath}/${v.id}`}
+                              className="font-mono font-semibold text-xs text-ink-900 group-hover:text-primary transition-colors"
+                            >
+                              {v.placa}
+                            </Link>
+                          </td>
+                          <td className="h-9 px-4 text-xs text-ink-700">
+                            {makeModel || <span className="text-ink-300">—</span>}
+                          </td>
+                          <td className="h-9 px-4 text-xs text-ink-500">
+                            {v.modelo_anio ?? <span className="text-ink-300">—</span>}
+                          </td>
+                          <td className="h-9 px-4 text-xs text-ink-500 capitalize">
+                            {v.tipo ?? <span className="text-ink-300">—</span>}
+                          </td>
+                          <td className="h-9 px-4">
+                            <StatusDot variant={ESTADO_VEHICULO_VARIANT[v.estado] ?? 'muted'}>
+                              {ESTADO_LABEL[v.estado] ?? v.estado}
+                            </StatusDot>
+                          </td>
+                          <td className="h-9 px-2">
+                            <Link
+                              href={`${basePath}/${v.id}`}
+                              className="flex items-center justify-center w-6 h-6 rounded text-ink-300 hover:text-ink-700 hover:bg-surface-raised transition-colors opacity-0 group-hover:opacity-100"
+                            >
+                              <IconChevronRight />
+                            </Link>
+                          </td>
+                        </tr>
+                      )
+                    })
+                  )}
                 </tbody>
               </table>
 

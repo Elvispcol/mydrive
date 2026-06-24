@@ -105,7 +105,7 @@ export function DocumentoVehiculoForm({ vehiculoId, documento, backHref, success
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <section className="bg-surface rounded-xl border border-border p-6 space-y-4">
-        <h2 className="text-sm font-semibold text-ink-900 uppercase tracking-wider mb-2">
+        <h2 className="text-sm font-semibold text-ink-900 mb-2">
           Datos del documento
         </h2>
 
@@ -202,7 +202,7 @@ export function DocumentoVehiculoForm({ vehiculoId, documento, backHref, success
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="text-xs font-semibold text-ink-700 uppercase tracking-wider mb-1.5 block">
+      <span className="text-xs font-semibold text-ink-700 mb-1.5 block">
         {label}
       </span>
       {children}

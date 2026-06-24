@@ -113,7 +113,7 @@ export function UsuarioForm({ regiones, usuario, backHref, successHref }: Props)
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <section className="bg-surface rounded-xl border border-border p-6">
-        <h2 className="text-sm font-semibold text-ink-900 mb-4 uppercase tracking-wider">Datos del usuario</h2>
+        <h2 className="text-sm font-semibold text-ink-900 mb-4">Datos del usuario</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Nombre completo *">
             <input type="text" value={form.nombre} onChange={e => set('nombre', e.target.value)} required placeholder="Nombre Apellido" className={inputCls} />
@@ -205,7 +205,7 @@ export function UsuarioForm({ regiones, usuario, backHref, successHref }: Props)
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="text-xs font-semibold text-ink-700 uppercase tracking-wider mb-1.5 block">{label}</span>
+      <span className="text-xs font-semibold text-ink-700 mb-1.5 block">{label}</span>
       {children}
     </label>
   )

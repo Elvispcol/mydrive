@@ -135,7 +135,7 @@ export function CombustibleForm({ vehiculos, conductores, combustible, backHref,
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Sección principal */}
       <section className="bg-surface rounded-xl border border-border p-6 space-y-4">
-        <h2 className="text-sm font-semibold text-ink-900 uppercase tracking-wider mb-2">
+        <h2 className="text-sm font-semibold text-ink-900 mb-2">
           Datos del abastecimiento
         </h2>
 
@@ -210,7 +210,7 @@ export function CombustibleForm({ vehiculos, conductores, combustible, backHref,
 
       {/* Sección de costos */}
       <section className="bg-surface rounded-xl border border-border p-6 space-y-4">
-        <h2 className="text-sm font-semibold text-ink-900 uppercase tracking-wider mb-2">
+        <h2 className="text-sm font-semibold text-ink-900 mb-2">
           Cantidades y costos
         </h2>
 
@@ -241,7 +241,7 @@ export function CombustibleForm({ vehiculos, conductores, combustible, backHref,
           </Field>
 
           <div>
-            <span className="text-xs font-semibold text-ink-700 uppercase tracking-wider mb-1.5 block">
+            <span className="text-xs font-semibold text-ink-700 mb-1.5 block">
               Costo total
             </span>
             <div className={`${inputCls} bg-surface-raised text-ink-500 flex items-center`}>
@@ -332,7 +332,7 @@ export function CombustibleForm({ vehiculos, conductores, combustible, backHref,
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="text-xs font-semibold text-ink-700 uppercase tracking-wider mb-1.5 block">
+      <span className="text-xs font-semibold text-ink-700 mb-1.5 block">
         {label}
       </span>
       {children}

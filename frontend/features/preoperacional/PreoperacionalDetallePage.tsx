@@ -68,7 +68,7 @@ export async function PreoperacionalDetallePage({ preoperacionalId, locale, rol,
               {fallas.length > 0 && (
                 <div className="bg-surface rounded-xl border border-danger/30 overflow-hidden">
                   <div className="px-4 py-2.5 bg-danger/5 border-b border-danger/20">
-                    <p className="text-xs font-semibold text-danger uppercase tracking-wider">
+                    <p className="text-xs font-semibold text-danger">
                       Fallas detectadas ({fallas.length})
                     </p>
                   </div>
@@ -98,7 +98,7 @@ export async function PreoperacionalDetallePage({ preoperacionalId, locale, rol,
               {/* Items aprobados */}
               <div className="bg-surface rounded-xl border border-border overflow-hidden">
                 <div className="px-4 py-2.5 border-b border-border bg-surface-raised">
-                  <p className="text-xs font-semibold text-ink-400 uppercase tracking-wider">
+                  <p className="text-[11px] font-medium text-ink-500">
                     Ítems aprobados ({aprobados.length})
                   </p>
                 </div>

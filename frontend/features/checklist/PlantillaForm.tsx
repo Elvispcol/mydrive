@@ -131,7 +131,7 @@ export function PlantillaForm({ plantilla, backHref, successHref }: Props) {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Datos de la plantilla */}
       <section className="bg-surface rounded-xl border border-border p-6 space-y-4">
-        <h2 className="text-sm font-semibold text-ink-900 uppercase tracking-wider mb-2">Plantilla</h2>
+        <h2 className="text-sm font-semibold text-ink-900 mb-2">Plantilla</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
           <div className="sm:col-span-2">
@@ -140,7 +140,7 @@ export function PlantillaForm({ plantilla, backHref, successHref }: Props) {
             </Field>
           </div>
           <div>
-            <span className="text-xs font-semibold text-ink-700 uppercase tracking-wider mb-1.5 block">Estado</span>
+            <span className="text-xs font-semibold text-ink-700 mb-1.5 block">Estado</span>
             <button
               type="button"
               onClick={() => setActiva(a => !a)}
@@ -159,7 +159,7 @@ export function PlantillaForm({ plantilla, backHref, successHref }: Props) {
       {/* Ítems */}
       <section className="bg-surface rounded-xl border border-border p-6 space-y-3">
         <div className="flex items-center justify-between mb-2">
-          <h2 className="text-sm font-semibold text-ink-900 uppercase tracking-wider">
+          <h2 className="text-sm font-semibold text-ink-900">
             Ítems de inspección
             <span className="ml-2 text-xs font-normal text-ink-400 normal-case tracking-normal">
               ({items.filter(it => it.texto.trim()).length} ítems)
@@ -246,7 +246,7 @@ export function PlantillaForm({ plantilla, backHref, successHref }: Props) {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="text-xs font-semibold text-ink-700 uppercase tracking-wider mb-1.5 block">{label}</span>
+      <span className="text-xs font-semibold text-ink-700 mb-1.5 block">{label}</span>
       {children}
     </label>
   )

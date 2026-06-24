@@ -92,7 +92,7 @@ export async function CombustibleListaPage({ locale, rol, nombre, basePath }: Pr
             <div className="bg-surface rounded-xl border border-border overflow-hidden">
               <div className="grid grid-cols-[1fr_1.5fr_1.2fr_1fr_1fr_1fr_auto] gap-3 px-5 py-2.5 bg-surface-raised border-b border-border">
                 {['Fecha', 'Vehículo', 'Conductor', 'Tipo', 'Litros', 'Costo total', ''].map(h => (
-                  <span key={h} className="text-xs font-semibold text-ink-400 uppercase tracking-wider">{h}</span>
+                  <span key={h} className="text-[11px] font-medium text-ink-500">{h}</span>
                 ))}
               </div>
               <div className="divide-y divide-border">

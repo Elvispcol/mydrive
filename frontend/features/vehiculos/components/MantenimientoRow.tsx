@@ -30,7 +30,7 @@ export function MantenimientoRow(props: Props) {
         <div className="flex items-start justify-between gap-3 flex-wrap">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs font-semibold text-ink-300 uppercase tracking-wider">
+              <span className="text-xs font-semibold text-ink-300">
                 Preventivo
               </span>
             </div>
@@ -75,7 +75,7 @@ export function MantenimientoRow(props: Props) {
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-semibold text-ink-300 uppercase tracking-wider">
+            <span className="text-xs font-semibold text-ink-300">
               Correctivo
             </span>
           </div>

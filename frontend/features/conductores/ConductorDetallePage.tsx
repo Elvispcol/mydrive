@@ -122,7 +122,7 @@ export function ConductorDetallePage({ conductor: c, locale, backHref, actions }
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="bg-surface rounded-xl border border-border p-5">
-      <h3 className="text-xs font-semibold text-ink-500 uppercase tracking-wider mb-4">{title}</h3>
+      <h3 className="text-[11px] font-medium text-ink-500 mb-4">{title}</h3>
       {children}
     </div>
   )

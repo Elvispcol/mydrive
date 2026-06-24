@@ -998,8 +998,8 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
 
   --color-canvas: var(--canvas);
   --color-surface: var(--surface);
@@ -1046,5 +1046,36 @@
 body {
   background: var(--canvas);
   color: var(--ink-900);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
 }
+
+/* ── Tabla: header base profesional (anula el patrón uppercase/semibold/tracking) ── */
+table thead th {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-500);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ── Dot de estado (sustituye los badges de fondo pesado) ── */
+.status-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.status-dot::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.status-dot-success::before { background: var(--success); }
+.status-dot-warning::before { background: var(--warning); }
+.status-dot-danger::before  { background: var(--danger); }
+.status-dot-muted::before   { background: var(--ink-300); }

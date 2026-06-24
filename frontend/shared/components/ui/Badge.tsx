@@ -21,7 +21,30 @@ export function Badge({
   className?: string
 }) {
   return (
-    <span className={`inline-flex items-center text-xs px-2 py-0.5 rounded-full font-medium ${STYLES[variant]} ${className}`}>
+    <span className={`inline-flex items-center text-[11px] px-1.5 py-0.5 rounded font-medium ${STYLES[variant]} ${className}`}>
+      {children}
+    </span>
+  )
+}
+
+const DOT_COLORS: Record<BadgeVariant, string> = {
+  danger:  'status-dot-danger text-danger-dark',
+  warning: 'status-dot-warning text-warning-dark',
+  success: 'status-dot-success text-success-dark',
+  primary: 'status-dot-success text-primary',
+  info:    'status-dot-success text-primary-hover',
+  muted:   'status-dot-muted text-ink-500',
+}
+
+export function StatusDot({
+  children,
+  variant = 'muted',
+}: {
+  children: ReactNode
+  variant?: BadgeVariant
+}) {
+  return (
+    <span className={`status-dot ${DOT_COLORS[variant]}`}>
       {children}
     </span>
   )

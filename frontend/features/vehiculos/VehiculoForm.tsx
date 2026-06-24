@@ -98,7 +98,7 @@ export function VehiculoForm({ regiones, vehiculo, backHref, successHref }: Prop
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Identificación */}
       <section className="bg-surface rounded-xl border border-border p-6">
-        <h2 className="text-sm font-semibold text-ink-900 mb-4 uppercase tracking-wider">Identificación</h2>
+        <h2 className="text-sm font-semibold text-ink-900 mb-4">Identificación</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <Field label="Placa *" required>
             <input
@@ -124,7 +124,7 @@ export function VehiculoForm({ regiones, vehiculo, backHref, successHref }: Prop
 
       {/* Datos del vehículo */}
       <section className="bg-surface rounded-xl border border-border p-6">
-        <h2 className="text-sm font-semibold text-ink-900 mb-4 uppercase tracking-wider">Datos del vehículo</h2>
+        <h2 className="text-sm font-semibold text-ink-900 mb-4">Datos del vehículo</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <Field label="Marca">
             <input type="text" value={form.marca} onChange={e => set('marca', e.target.value)} placeholder="Toyota" className={inputCls} />
@@ -174,7 +174,7 @@ export function VehiculoForm({ regiones, vehiculo, backHref, successHref }: Prop
 
       {/* Operación */}
       <section className="bg-surface rounded-xl border border-border p-6">
-        <h2 className="text-sm font-semibold text-ink-900 mb-4 uppercase tracking-wider">Operación</h2>
+        <h2 className="text-sm font-semibold text-ink-900 mb-4">Operación</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <Field label="Km actual">
             <input
@@ -235,7 +235,7 @@ export function VehiculoForm({ regiones, vehiculo, backHref, successHref }: Prop
 function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="text-xs font-semibold text-ink-700 uppercase tracking-wider mb-1.5 block">
+      <span className="text-xs font-semibold text-ink-700 mb-1.5 block">
         {label}
       </span>
       {children}

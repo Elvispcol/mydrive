@@ -3,8 +3,15 @@ import type { Locale } from '@/lib/i18n/config'
 import { createClient } from '@/lib/supabase/server'
 import { TareaListaPage } from '@/features/tareas/TareaListaPage'
 
-export default async function Page({ params }: { params: Promise<{ locale: Locale }> }) {
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: Locale }>
+  searchParams: Promise<{ q?: string }>
+}) {
   const { locale } = await params
+  const { q } = await searchParams
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect(`/${locale}/login`)
@@ -18,6 +25,7 @@ export default async function Page({ params }: { params: Promise<{ locale: Local
       rol="director"
       nombre={perfil.nombre}
       basePath={`/${locale}/director/tareas`}
+      q={q}
     />
   )
 }

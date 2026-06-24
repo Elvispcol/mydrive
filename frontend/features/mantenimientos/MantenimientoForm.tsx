@@ -98,7 +98,7 @@ export function MantenimientoForm({
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Vehículo */}
       <section className="bg-surface rounded-xl border border-border p-6">
-        <h2 className="text-sm font-semibold text-ink-900 mb-4 uppercase tracking-wider">Vehículo</h2>
+        <h2 className="text-sm font-semibold text-ink-900 mb-4">Vehículo</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Vehículo *">
             <select
@@ -132,7 +132,7 @@ export function MantenimientoForm({
 
       {/* Detalle del mantenimiento */}
       <section className="bg-surface rounded-xl border border-border p-6 space-y-4">
-        <h2 className="text-sm font-semibold text-ink-900 mb-2 uppercase tracking-wider">Detalle del trabajo</h2>
+        <h2 className="text-sm font-semibold text-ink-900 mb-2">Detalle del trabajo</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Tipo de mantenimiento">
@@ -211,7 +211,7 @@ export function MantenimientoForm({
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="text-xs font-semibold text-ink-700 uppercase tracking-wider mb-1.5 block">{label}</span>
+      <span className="text-xs font-semibold text-ink-700 mb-1.5 block">{label}</span>
       {children}
     </label>
   )

@@ -63,7 +63,7 @@ function InfoField({
 }) {
   return (
     <div>
-      <p className="text-xs text-ink-300 uppercase tracking-wider font-medium mb-0.5">{label}</p>
+      <p className="text-xs text-ink-300 font-medium mb-0.5">{label}</p>
       <p className={`text-sm font-medium ${muted ? 'text-ink-300 italic' : 'text-ink-900'}`}>
         {value}
       </p>

@@ -175,7 +175,7 @@ export function NovedadForm({ vehiculos, regiones, novedad, backHref, successHre
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="text-xs font-semibold text-ink-700 uppercase tracking-wider mb-1.5 block">{label}</span>
+      <span className="text-xs font-semibold text-ink-700 mb-1.5 block">{label}</span>
       {children}
     </label>
   )

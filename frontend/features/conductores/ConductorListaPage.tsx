@@ -40,22 +40,22 @@ export function ConductorListaPage({ conductores, basePath, actions }: Props) {
           <table className="w-full text-sm border-collapse">
             <thead>
               <tr className="bg-surface-raised border-b border-border">
-                <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider">
+                <th className="h-12 px-4 text-left text-[11px] font-medium text-ink-500">
                   Conductor
                 </th>
-                <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider w-36">
+                <th className="h-12 px-4 text-left text-[11px] font-medium text-ink-500 w-36">
                   Vehículo
                 </th>
-                <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider w-32">
+                <th className="h-12 px-4 text-left text-[11px] font-medium text-ink-500 w-32">
                   Asignación
                 </th>
-                <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider w-32">
+                <th className="h-12 px-4 text-left text-[11px] font-medium text-ink-500 w-32">
                   Licencia
                 </th>
-                <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider w-32">
+                <th className="h-12 px-4 text-left text-[11px] font-medium text-ink-500 w-32">
                   Regional
                 </th>
-                <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider w-24">
+                <th className="h-12 px-4 text-left text-[11px] font-medium text-ink-500 w-24">
                   Lic. estado
                 </th>
                 <th className="h-12 w-10" />

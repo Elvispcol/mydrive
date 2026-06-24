@@ -56,7 +56,7 @@ export function RegionForm({ region, backHref, successHref }: Props) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <section className="bg-surface rounded-xl border border-border p-6 space-y-4">
-        <h2 className="text-sm font-semibold text-ink-900 mb-2 uppercase tracking-wider">Datos de la región</h2>
+        <h2 className="text-sm font-semibold text-ink-900 mb-2">Datos de la región</h2>
 
         <Field label="Nombre *">
           <input
@@ -116,7 +116,7 @@ export function RegionForm({ region, backHref, successHref }: Props) {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="text-xs font-semibold text-ink-700 uppercase tracking-wider mb-1.5 block">{label}</span>
+      <span className="text-xs font-semibold text-ink-700 mb-1.5 block">{label}</span>
       {children}
     </label>
   )

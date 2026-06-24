@@ -6,7 +6,7 @@ import { Sidebar } from '@/shared/components/Sidebar'
 import { LogoutButton } from '@/shared/components/LogoutButton'
 import { PageHeader } from '@/shared/components/PageHeader'
 import { EmptyState } from '@/shared/components/ui/EmptyState'
-import { Badge } from '@/shared/components/ui/Badge'
+import { StatusDot } from '@/shared/components/ui/Badge'
 import { formatDate } from '@/shared/utils/formatters'
 
 const ESTADO_VARIANT: Record<EstadoMantenimiento, 'primary' | 'warning' | 'success' | 'muted'> = {
@@ -54,15 +54,15 @@ export async function MantenimientoListaPage({ locale, rol, nombre, basePath }: 
           {page.items.length === 0 ? (
             <EmptyState label="Sin mantenimientos registrados" />
           ) : (
-            <div className="bg-surface rounded-xl border border-border overflow-hidden">
+            <div className="bg-surface rounded-xl border border-border overflow-hidden shadow-sm">
               <table className="w-full text-sm border-collapse">
                 <thead>
                   <tr className="bg-surface-raised border-b border-border">
-                    <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider">Descripción</th>
-                    <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider w-24">Tipo</th>
-                    <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider w-36">Vehículo</th>
-                    <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider w-28">Fecha</th>
-                    <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider w-28">Estado</th>
+                    <th className="h-12 px-4 text-left text-[11px] font-medium text-ink-500">Descripción</th>
+                    <th className="h-12 px-4 text-left text-[11px] font-medium text-ink-500 w-24">Tipo</th>
+                    <th className="h-12 px-4 text-left text-[11px] font-medium text-ink-500 w-36">Vehículo</th>
+                    <th className="h-12 px-4 text-left text-[11px] font-medium text-ink-500 w-28">Fecha</th>
+                    <th className="h-12 px-4 text-left text-[11px] font-medium text-ink-500 w-28">Estado</th>
                     <th className="h-12 w-16" />
                   </tr>
                 </thead>
@@ -104,7 +104,7 @@ function MantenimientoRow({ m, basePath, locale }: { m: MantenimientoConVehiculo
       </td>
       <td className="h-9 px-4 text-xs text-ink-500">{formatDate(m.fecha, locale)}</td>
       <td className="h-9 px-4">
-        <Badge variant={ESTADO_VARIANT[m.estado] ?? 'muted'}>{ESTADO_LABEL[m.estado] ?? m.estado}</Badge>
+        <StatusDot variant={ESTADO_VARIANT[m.estado] ?? 'muted'}>{ESTADO_LABEL[m.estado] ?? m.estado}</StatusDot>
       </td>
       <td className="h-9 px-4">
         <Link

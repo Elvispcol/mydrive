@@ -7,7 +7,7 @@ import { LogoutButton } from '@/shared/components/LogoutButton'
 import { PageHeader } from '@/shared/components/PageHeader'
 import { KpiCard } from '@/shared/components/ui/KpiCard'
 import { EmptyState } from '@/shared/components/ui/EmptyState'
-import { Badge } from '@/shared/components/ui/Badge'
+import { StatusDot } from '@/shared/components/ui/Badge'
 import { formatDate } from '@/shared/utils/formatters'
 
 const TIPO_LABELS: Record<TipoInfraccion, string> = {
@@ -77,16 +77,16 @@ export async function MultaListaPage({ locale, rol, nombre, basePath }: Props) {
           {multas.length === 0 ? (
             <EmptyState label="Sin infracciones registradas." />
           ) : (
-            <div className="bg-surface rounded-xl border border-border overflow-hidden">
+            <div className="bg-surface rounded-xl border border-border overflow-hidden shadow-sm">
               <table className="w-full text-sm border-collapse">
                 <thead>
                   <tr className="bg-surface-raised border-b border-border">
-                    <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider w-28">Fecha</th>
-                    <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider w-32">Vehículo</th>
-                    <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider">Conductor</th>
-                    <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider w-32">Tipo</th>
-                    <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider w-28">Valor</th>
-                    <th className="h-12 px-4 text-left text-xs font-semibold text-ink-500 uppercase tracking-wider w-28">Estado</th>
+                    <th className="h-12 px-4 text-left text-[11px] font-medium text-ink-500 w-28">Fecha</th>
+                    <th className="h-12 px-4 text-left text-[11px] font-medium text-ink-500 w-32">Vehículo</th>
+                    <th className="h-12 px-4 text-left text-[11px] font-medium text-ink-500">Conductor</th>
+                    <th className="h-12 px-4 text-left text-[11px] font-medium text-ink-500 w-32">Tipo</th>
+                    <th className="h-12 px-4 text-left text-[11px] font-medium text-ink-500 w-28">Valor</th>
+                    <th className="h-12 px-4 text-left text-[11px] font-medium text-ink-500 w-28">Estado</th>
                     <th className="h-12 w-16" />
                   </tr>
                 </thead>
@@ -120,7 +120,7 @@ function MultaRow({ m, basePath, locale }: { m: MultaConDetalle; basePath: strin
         {m.valor != null ? `$${Number(m.valor).toLocaleString('es-CO', { maximumFractionDigits: 0 })}` : '—'}
       </td>
       <td className="h-9 px-4">
-        <Badge variant={ESTADO_VARIANT[m.estado]}>{ESTADO_LABELS[m.estado]}</Badge>
+        <StatusDot variant={ESTADO_VARIANT[m.estado]}>{ESTADO_LABELS[m.estado]}</StatusDot>
       </td>
       <td className="h-9 px-4">
         <Link

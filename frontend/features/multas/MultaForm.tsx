@@ -123,7 +123,7 @@ export function MultaForm({ vehiculos, conductores, multa, backHref, successHref
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Infracción */}
       <section className="bg-surface rounded-xl border border-border p-6 space-y-4">
-        <h2 className="text-sm font-semibold text-ink-900 uppercase tracking-wider mb-2">Infracción</h2>
+        <h2 className="text-sm font-semibold text-ink-900 mb-2">Infracción</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Vehículo *">
@@ -170,7 +170,7 @@ export function MultaForm({ vehiculos, conductores, multa, backHref, successHref
 
       {/* Valores y estado */}
       <section className="bg-surface rounded-xl border border-border p-6 space-y-4">
-        <h2 className="text-sm font-semibold text-ink-900 uppercase tracking-wider mb-2">Valores y estado</h2>
+        <h2 className="text-sm font-semibold text-ink-900 mb-2">Valores y estado</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Field label="Valor de la multa">
@@ -224,7 +224,7 @@ export function MultaForm({ vehiculos, conductores, multa, backHref, successHref
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="text-xs font-semibold text-ink-700 uppercase tracking-wider mb-1.5 block">{label}</span>
+      <span className="text-xs font-semibold text-ink-700 mb-1.5 block">{label}</span>
       {children}
     </label>
   )
