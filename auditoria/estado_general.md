@@ -30,13 +30,13 @@
 | Ítem | Estado | Notas |
 |---|---|---|
 | RLS activo en todas las tablas | ✅ | Verificado en migraciones |
-| Credenciales en .gitignore | 🔴 | `.env.local` fue commiteado — ROTAR KEYS |
-| Middleware de protección de rutas | 🔴 | No existe middleware.ts |
+| Credenciales en .gitignore | 🔴 | `.env.local` fue commiteado — ROTAR KEYS (PC-001 pendiente) |
+| Middleware de protección de rutas | ✅ | `frontend/middleware.ts` — commit dcd5907 (2026-06-28) |
 | CORS en Edge Functions | ✅ | Whitelist de dominios configurada |
 | Rate limiting Edge Functions | ✅ | 20 req/min crear-novedad, 10 req/min notificar-evento |
-| SERVICE_ROLE_KEY solo en servidor | 🔴 | Expuesto en git history — requiere rotación |
+| SERVICE_ROLE_KEY solo en servidor | 🔴 | Expuesto en git history — rotación pendiente mañana |
 | Validación de inputs (server-side) | ⚠️ | Solo validación básica en API route usuarios |
-| Headers de seguridad HTTP | ⬜ | Sin next.config headers (X-Frame-Options, CSP, etc.) |
+| Headers de seguridad HTTP | ✅ | X-Frame-Options, nosniff, Referrer-Policy — commit dcd5907 (2026-06-28) |
 
 ---
 
@@ -114,7 +114,7 @@
 
 ```
 Base de datos:      ████████░░  80%  — Sólida, falta tipos generados y auditoría de índices
-Seguridad:          ████░░░░░░  40%  — CRÍTICO: credenciales expuestas, sin middleware
+Seguridad:          ██████░░░░  60%  — Middleware ✅ Headers ✅ — Falta rotar keys (PC-001)
 Frontend:           ███████░░░  70%  — Módulos completos, sin testing ni validación robusta
 Testing:            ░░░░░░░░░░   0%  — BLOQUEANTE para producción
 Deployment:         ██░░░░░░░░  20%  — Solo CI parcial, sin Vercel
@@ -123,4 +123,5 @@ Mobile:             ░░░░░░░░░░   0%  — No iniciado
 
 LISTO PARA PRODUCCIÓN: NO
 LISTO PARA PILOTO INTERNO: SÍ (con cliente conocido y supervisado)
+Última actualización: 2026-06-28
 ```

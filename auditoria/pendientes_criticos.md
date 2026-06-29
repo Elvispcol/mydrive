@@ -34,14 +34,8 @@
 ## BLOQUEANTE — Sin esto no hay producción real
 
 ### PC-003: Crear middleware.ts de protección de rutas
-- **Riesgo:** Sin middleware, las rutas del dashboard no están centralmente protegidas
-- **Qué hacer:** Crear `frontend/middleware.ts` que:
-  - Intercepte todas las rutas bajo `/(dashboard)/`
-  - Verifique sesión Supabase SSR
-  - Redirija a login si no hay sesión
-  - Redirija según rol (director → /director, admin → /admin, conductor → /conductor)
-- **Tiempo estimado:** 2-3 horas
-- **Estado:** ⬜ Pendiente
+- **Estado:** ✅ Completado 2026-06-28
+- **Commit:** `dcd5907` — protege /admin /director /conductor /superadmin, refresca sesión SSR, redirige a login con ?redirectTo=
 
 ### PC-004: Desplegar en Vercel
 - **Riesgo:** El producto no existe para nadie más que el developer local
@@ -80,20 +74,8 @@
 ## IMPORTANTE — Para operar con confianza
 
 ### PC-007: Agregar headers de seguridad HTTP
-- **Riesgo:** Sin CSP, X-Frame-Options, etc. hay vectores de ataque básicos abiertos
-- **Qué hacer:** Agregar en `next.config.ts`:
-  ```ts
-  headers: async () => [{
-    source: '/(.*)',
-    headers: [
-      { key: 'X-Frame-Options', value: 'DENY' },
-      { key: 'X-Content-Type-Options', value: 'nosniff' },
-      { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-    ]
-  }]
-  ```
-- **Tiempo estimado:** 30 minutos
-- **Estado:** ⬜ Pendiente
+- **Estado:** ✅ Completado 2026-06-28
+- **Commit:** `dcd5907` — X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy en next.config.ts
 
 ### PC-008: Tests E2E del flujo crítico de conductor
 - **Riesgo:** El flujo preoperacional → novedad es el core del producto. Cualquier regresión es grave
@@ -144,7 +126,8 @@
 
 | ID | Ítem | Fecha | Notas |
 |---|---|---|---|
-| — | — | — | Ninguno completado aún |
+| PC-003 | Middleware de protección de rutas | 2026-06-28 | `frontend/middleware.ts` — commit dcd5907 |
+| PC-007 | Headers de seguridad HTTP | 2026-06-28 | `next.config.ts` — commit dcd5907 |
 
 ---
 

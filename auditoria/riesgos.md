@@ -52,13 +52,7 @@
 - **Estado:** 🟡 Abierto
 
 ### R-006: Sin middleware de protección de rutas
-- **Probabilidad:** Media (un bug en cualquier page.tsx deja ruta desprotegida)
-- **Impacto:** Medio (acceso no autorizado a pantallas, datos filtrados por RLS de todas formas)
-- **Exposición:** MEDIA
-- **Descripción:** El control de acceso está en cada `page.tsx` individualmente. Si se crea una página nueva y se olvida el check de auth/rol, la ruta queda accesible sin autenticación. El RLS protege los datos, pero la UI queda expuesta.
-- **Plan de mitigación:** PC-003 (middleware.ts)
-- **Fecha identificación:** 2026-06-28
-- **Estado:** 🔴 Abierto
+- **Estado:** ✅ MITIGADO 2026-06-28 — `frontend/middleware.ts` instalado, commit dcd5907
 
 ### R-007: Conductor sin capacidades mobile-first reales
 - **Probabilidad:** Alta (los conductores usan teléfonos en campo)
@@ -75,7 +69,7 @@
 
 | ID | Riesgo | Fecha mitigación | Cómo se resolvió |
 |---|---|---|---|
-| — | — | — | Ninguno mitigado aún |
+| R-006 | Sin middleware de protección de rutas | 2026-06-28 | `frontend/middleware.ts` — refresca sesión SSR y redirige a login si no hay sesión |
 
 ---
 
